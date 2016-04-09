@@ -17,7 +17,7 @@ namespace Chatbot
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Inisialisasi Program
-            Application.Run(new Form1());
+            Application.Run(new MainForm());
         }
     }
 }
