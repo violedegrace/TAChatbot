@@ -21,17 +21,18 @@ namespace Chatbot
 
         public tbUser user; // untuk user yang akan dikembalikan
         dbDataContext db; // koneksi ke db dibuat
-        public LoginForm()
+        public LoginForm(dbDataContext database)
         {
             /* Ctor Login Form
              * menginisialisasi seluruh komponen, menghilgkan label warning dan
              * Diable SignUp serta membuat koneksi ke db
             */
             InitializeComponent();
-            db = new dbDataContext();
+            db = database;
             user = null;
             SignUpPanel.Enabled = false;
             labelWarning.Visible = false;
+            this.AcceptButton = buttonLogin;
         }
 
         private void buttonSignup_Click(object sender, EventArgs e)
