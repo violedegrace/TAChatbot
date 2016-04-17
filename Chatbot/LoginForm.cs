@@ -40,11 +40,35 @@ namespace Chatbot
              */
             SignUpPanel.Enabled = true;
             LoginPanel.Enabled = false;
+            this.AcceptButton = this.buttonCreate;
         }
 
         private void buttonCreate_Click(object sender, EventArgs e)
         {
-
+            if (string.IsNullOrWhiteSpace(textBoxSignUpName.Text) || string.IsNullOrWhiteSpace(textBoxSignUpPassword.Text) ||
+                string.IsNullOrWhiteSpace(textBoxSignUpUsername.Text))
+            {
+                MessageBox.Show("Mohon isi seluruh data");
+            }
+            else
+            {
+                tbUser baru = db.tbUsers.Where(x => x.Username.ToLower().Equals(textBoxSignUpUsername.Text.ToLower())).FirstOrDefault();
+                if (baru != null)
+                {
+                    MessageBox.Show("Username sudah terpakai");
+                }
+                else
+                {
+                    baru = new tbUser();
+                    baru.Name = textBoxSignUpName.Text;
+                    baru.Username = textBoxSignUpUsername.Text;
+                    baru.Password = textBoxSignUpPassword.Text;
+                    db.tbUsers.InsertOnSubmit(baru);
+                    db.SubmitChanges();
+                    MessageBox.Show("Akun telah berhasil dibuat");
+                    buttonCancelCreate.PerformClick();
+                }
+            }
         }
 
         private void buttonCancelCreate_Click(object sender, EventArgs e)
@@ -52,6 +76,10 @@ namespace Chatbot
             /* metode untuk Enable login dan disable signup karena
              * batal melakukan signup
              */
+            this.AcceptButton = this.buttonLogin;
+            textBoxSignUpName.Text = "";
+            textBoxSignUpPassword.Text = "";
+            textBoxSignUpUsername.Text = "";
             SignUpPanel.Enabled = false;
             LoginPanel.Enabled = true;
         }
