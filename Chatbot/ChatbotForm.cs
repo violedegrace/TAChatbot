@@ -21,11 +21,11 @@ namespace Chatbot
             InitializeComponent();
             db = new dbDataContext();
             LoginForm login = new LoginForm(db);
-            if (true)//login.ShowDialog() == DialogResult.OK)
+            if (login.ShowDialog() == DialogResult.OK)
             {
                 bot = db.tbUsers.Where(x => x.Id == 0).FirstOrDefault();
-                //currentUser = login.user;
-                currentUser = db.tbUsers.Where(x => x.Id == 1).FirstOrDefault();
+                currentUser = login.user;
+                //currentUser = db.tbUsers.Where(x => x.Id == 1).FirstOrDefault();
                 this.Text = bot.Name + " Chatbot";
             }
             else
