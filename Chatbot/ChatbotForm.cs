@@ -10,17 +10,19 @@ using System.Windows.Forms;
 
 namespace Chatbot
 {
-    public partial class MainForm : Form
+    public partial class ChatbotForm : Form
     {
         public tbUser currentUser;
         private tbUser bot;
         private dbDataContext db;
-        public MainForm()
+
+        public ChatbotForm()
         {
+            InitializeComponent();
             InitializeComponent();
             db = new dbDataContext();
             LoginForm login = new LoginForm(db);
-            if (login.ShowDialog()==DialogResult.OK)
+            if (login.ShowDialog() == DialogResult.OK)
             {
                 bot = db.tbUsers.Where(x => x.Id == 0).FirstOrDefault();
                 currentUser = login.user;
@@ -35,6 +37,7 @@ namespace Chatbot
                 this.Close();
                 this.Dispose();
             }
+
         }
     }
 }

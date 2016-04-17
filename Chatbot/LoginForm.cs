@@ -46,6 +46,11 @@ namespace Chatbot
 
         private void buttonCreate_Click(object sender, EventArgs e)
         {
+            /* metode untuk membuat user.
+             * Jika data kosong maka akan memberi peringatan
+             * jika username sudah ada maka akan diberi peringatan
+             * jika data baru maka akan dibuat, diisi dan dimasukkan ke database
+             */
             if (string.IsNullOrWhiteSpace(textBoxSignUpName.Text) || string.IsNullOrWhiteSpace(textBoxSignUpPassword.Text) ||
                 string.IsNullOrWhiteSpace(textBoxSignUpUsername.Text))
             {
