@@ -51,6 +51,9 @@
     <Compile Include="ChatbotForm.Designer.cs">
       <DependentUpon>ChatbotForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="db.cs">
+      <DependentUpon>db.dbml</DependentUpon>
+    </Compile>
     <Compile Include="db.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

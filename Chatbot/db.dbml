@@ -1,29 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="dbTAChatbot" Class="dbDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=EMPC\SQLEXPRESS;Initial Catalog=dbTAChatbot;Integrated Security=True" SettingsObjectName="Chatbot.Properties.Settings" SettingsPropertyName="dbTAChatbotConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=VGL\SQLEXPRESS;Initial Catalog=dbTAChatbot;Integrated Security=True" SettingsObjectName="Chatbot.Properties.Settings" SettingsPropertyName="dbTAChatbotConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.tbDomain" Member="tbDomains">
     <Type Name="tbDomain">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
-      <Association Name="tbDomain_tbInformasi" Member="tbInformasis" ThisKey="Id" OtherKey="DomainID" Type="tbInformasi" />
-    </Type>
-  </Table>
-  <Table Name="dbo.tbUser" Member="tbUsers">
-    <Type Name="tbUser">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Username" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="Password" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Association Name="tbUser_tbLog" Member="tbLogs" ThisKey="Id" OtherKey="UserID" Type="tbLog" />
+      <Association Name="tbDomain_tbInformasi" Member="tbInformasis" ThisKey="Id" OtherKey="DomainID" Type="tbInformasi" />
     </Type>
   </Table>
   <Table Name="dbo.tbInfDetail" Member="tbInfDetails">
     <Type Name="tbInfDetail">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="InformationID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Data" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
       <Column Name="Awal" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
       <Column Name="Penghubung" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="Akhir" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
       <Association Name="tbInformasi_tbInfDetail" Member="tbInformasi" ThisKey="InformationID" OtherKey="Id" Type="tbInformasi" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbInformasi" Member="tbInformasis">
+    <Type Name="tbInformasi">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DomainID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Judul" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Indexed" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Lokasi" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="tbInformasi_tbInfDetail" Member="tbInfDetails" ThisKey="Id" OtherKey="InformationID" Type="tbInfDetail" />
+      <Association Name="tbDomain_tbInformasi" Member="tbDomain" ThisKey="DomainID" OtherKey="Id" Type="tbDomain" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.tbLog" Member="tbLogs">
@@ -50,15 +53,13 @@
       <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.tbInformasi" Member="tbInformasis">
-    <Type Name="tbInformasi">
+  <Table Name="dbo.tbUser" Member="tbUsers">
+    <Type Name="tbUser">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="DomainID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Judul" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="Indexed" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Lokasi" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Association Name="tbInformasi_tbInfDetail" Member="tbInfDetails" ThisKey="Id" OtherKey="InformationID" Type="tbInfDetail" />
-      <Association Name="tbDomain_tbInformasi" Member="tbDomain" ThisKey="DomainID" OtherKey="Id" Type="tbDomain" IsForeignKey="true" />
+      <Column Name="Username" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="tbUser_tbLog" Member="tbLogs" ThisKey="Id" OtherKey="UserID" Type="tbLog" />
     </Type>
   </Table>
 </Database>
