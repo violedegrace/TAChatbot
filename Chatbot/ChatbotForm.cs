@@ -16,13 +16,17 @@ namespace Chatbot
         public tbUser currentUser;
         private tbUser bot;
         private dbDataContext db;
+        private EngineActuator Engine;
 
         public ChatbotForm()
         {
+            //Inisialisasi Program
             InitializeComponent();
             Lingkungan.CreateLocation();
             db = new dbDataContext();
             LoginForm login = new LoginForm(db);
+            Engine = new EngineActuator(null);
+            
             if (true) //temporary code
             {
                 bot = db.tbUsers.Where(x => x.Id == 0).FirstOrDefault();
