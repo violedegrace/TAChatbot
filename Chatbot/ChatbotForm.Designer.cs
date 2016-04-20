@@ -37,9 +37,9 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxMain = new System.Windows.Forms.GroupBox();
-            this.listBoxConv = new System.Windows.Forms.ListBox();
-            this.textBoxInput = new System.Windows.Forms.TextBox();
             this.buttonSend = new System.Windows.Forms.Button();
+            this.textBoxInput = new System.Windows.Forms.TextBox();
+            this.listBoxConv = new System.Windows.Forms.ListBox();
             this.menuStrip1.SuspendLayout();
             this.groupBoxMain.SuspendLayout();
             this.SuspendLayout();
@@ -84,12 +84,14 @@
             this.manageDataToolStripMenuItem.Name = "manageDataToolStripMenuItem";
             this.manageDataToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.manageDataToolStripMenuItem.Text = "Manage Data";
+            this.manageDataToolStripMenuItem.Click += new System.EventHandler(this.manageDataToolStripMenuItem_Click);
             // 
             // rebuildDatabaseToolStripMenuItem
             // 
             this.rebuildDatabaseToolStripMenuItem.Name = "rebuildDatabaseToolStripMenuItem";
             this.rebuildDatabaseToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.rebuildDatabaseToolStripMenuItem.Text = "Rebuild Database";
+            this.rebuildDatabaseToolStripMenuItem.Click += new System.EventHandler(this.rebuildDatabaseToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -116,21 +118,6 @@
             this.groupBoxMain.TabIndex = 1;
             this.groupBoxMain.TabStop = false;
             // 
-            // listBoxConv
-            // 
-            this.listBoxConv.FormattingEnabled = true;
-            this.listBoxConv.Location = new System.Drawing.Point(0, 8);
-            this.listBoxConv.Name = "listBoxConv";
-            this.listBoxConv.Size = new System.Drawing.Size(317, 355);
-            this.listBoxConv.TabIndex = 0;
-            // 
-            // textBoxInput
-            // 
-            this.textBoxInput.Location = new System.Drawing.Point(0, 377);
-            this.textBoxInput.Name = "textBoxInput";
-            this.textBoxInput.Size = new System.Drawing.Size(239, 20);
-            this.textBoxInput.TabIndex = 1;
-            // 
             // buttonSend
             // 
             this.buttonSend.Location = new System.Drawing.Point(252, 374);
@@ -139,6 +126,21 @@
             this.buttonSend.TabIndex = 2;
             this.buttonSend.Text = "send";
             this.buttonSend.UseVisualStyleBackColor = true;
+            // 
+            // textBoxInput
+            // 
+            this.textBoxInput.Location = new System.Drawing.Point(0, 377);
+            this.textBoxInput.Name = "textBoxInput";
+            this.textBoxInput.Size = new System.Drawing.Size(239, 20);
+            this.textBoxInput.TabIndex = 1;
+            // 
+            // listBoxConv
+            // 
+            this.listBoxConv.FormattingEnabled = true;
+            this.listBoxConv.Location = new System.Drawing.Point(0, 8);
+            this.listBoxConv.Name = "listBoxConv";
+            this.listBoxConv.Size = new System.Drawing.Size(317, 355);
+            this.listBoxConv.TabIndex = 0;
             // 
             // ChatbotForm
             // 
@@ -149,6 +151,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "ChatbotForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ChatbotForm";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
