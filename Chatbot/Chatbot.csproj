@@ -56,11 +56,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>db.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Lingkungan.cs" />
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ManageDBForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManageDBForm.Designer.cs">
+      <DependentUpon>ManageDBForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,6 +79,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManageDBForm.resx">
+      <DependentUpon>ManageDBForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
