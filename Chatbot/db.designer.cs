@@ -39,9 +39,6 @@ namespace Chatbot
     partial void InserttbInfDetail(tbInfDetail instance);
     partial void UpdatetbInfDetail(tbInfDetail instance);
     partial void DeletetbInfDetail(tbInfDetail instance);
-    partial void InserttbInformasi(tbInformasi instance);
-    partial void UpdatetbInformasi(tbInformasi instance);
-    partial void DeletetbInformasi(tbInformasi instance);
     partial void InserttbLog(tbLog instance);
     partial void UpdatetbLog(tbLog instance);
     partial void DeletetbLog(tbLog instance);
@@ -51,6 +48,9 @@ namespace Chatbot
     partial void InserttbState(tbState instance);
     partial void UpdatetbState(tbState instance);
     partial void DeletetbState(tbState instance);
+    partial void InserttbInformasi(tbInformasi instance);
+    partial void UpdatetbInformasi(tbInformasi instance);
+    partial void DeletetbInformasi(tbInformasi instance);
     #endregion
 		
 		public dbDataContext() : 
@@ -107,14 +107,6 @@ namespace Chatbot
 			}
 		}
 		
-		public System.Data.Linq.Table<tbInformasi> tbInformasis
-		{
-			get
-			{
-				return this.GetTable<tbInformasi>();
-			}
-		}
-		
 		public System.Data.Linq.Table<tbLog> tbLogs
 		{
 			get
@@ -136,6 +128,14 @@ namespace Chatbot
 			get
 			{
 				return this.GetTable<tbState>();
+			}
+		}
+		
+		public System.Data.Linq.Table<tbInformasi> tbInformasis
+		{
+			get
+			{
+				return this.GetTable<tbInformasi>();
 			}
 		}
 	}
@@ -615,185 +615,6 @@ namespace Chatbot
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tbInformasi")]
-	public partial class tbInformasi : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private int _DomainID;
-		
-		private string _Judul;
-		
-		private EntitySet<tbInfDetail> _tbInfDetails;
-		
-		private EntityRef<tbDomain> _tbDomain;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnDomainIDChanging(int value);
-    partial void OnDomainIDChanged();
-    partial void OnJudulChanging(string value);
-    partial void OnJudulChanged();
-    #endregion
-		
-		public tbInformasi()
-		{
-			this._tbInfDetails = new EntitySet<tbInfDetail>(new Action<tbInfDetail>(this.attach_tbInfDetails), new Action<tbInfDetail>(this.detach_tbInfDetails));
-			this._tbDomain = default(EntityRef<tbDomain>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DomainID", DbType="Int NOT NULL")]
-		public int DomainID
-		{
-			get
-			{
-				return this._DomainID;
-			}
-			set
-			{
-				if ((this._DomainID != value))
-				{
-					if (this._tbDomain.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnDomainIDChanging(value);
-					this.SendPropertyChanging();
-					this._DomainID = value;
-					this.SendPropertyChanged("DomainID");
-					this.OnDomainIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Judul", DbType="NChar(10)")]
-		public string Judul
-		{
-			get
-			{
-				return this._Judul;
-			}
-			set
-			{
-				if ((this._Judul != value))
-				{
-					this.OnJudulChanging(value);
-					this.SendPropertyChanging();
-					this._Judul = value;
-					this.SendPropertyChanged("Judul");
-					this.OnJudulChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tbInformasi_tbInfDetail", Storage="_tbInfDetails", ThisKey="Id", OtherKey="InformationID")]
-		public EntitySet<tbInfDetail> tbInfDetails
-		{
-			get
-			{
-				return this._tbInfDetails;
-			}
-			set
-			{
-				this._tbInfDetails.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tbDomain_tbInformasi", Storage="_tbDomain", ThisKey="DomainID", OtherKey="Id", IsForeignKey=true)]
-		public tbDomain tbDomain
-		{
-			get
-			{
-				return this._tbDomain.Entity;
-			}
-			set
-			{
-				tbDomain previousValue = this._tbDomain.Entity;
-				if (((previousValue != value) 
-							|| (this._tbDomain.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._tbDomain.Entity = null;
-						previousValue.tbInformasis.Remove(this);
-					}
-					this._tbDomain.Entity = value;
-					if ((value != null))
-					{
-						value.tbInformasis.Add(this);
-						this._DomainID = value.Id;
-					}
-					else
-					{
-						this._DomainID = default(int);
-					}
-					this.SendPropertyChanged("tbDomain");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_tbInfDetails(tbInfDetail entity)
-		{
-			this.SendPropertyChanging();
-			entity.tbInformasi = this;
-		}
-		
-		private void detach_tbInfDetails(tbInfDetail entity)
-		{
-			this.SendPropertyChanging();
-			entity.tbInformasi = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tbLog")]
 	public partial class tbLog : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1231,6 +1052,233 @@ namespace Chatbot
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tbInformasi")]
+	public partial class tbInformasi : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _DomainID;
+		
+		private string _Judul;
+		
+		private System.Nullable<int> _Indexed;
+		
+		private string _Lokasi;
+		
+		private EntitySet<tbInfDetail> _tbInfDetails;
+		
+		private EntityRef<tbDomain> _tbDomain;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnDomainIDChanging(int value);
+    partial void OnDomainIDChanged();
+    partial void OnJudulChanging(string value);
+    partial void OnJudulChanged();
+    partial void OnIndexedChanging(System.Nullable<int> value);
+    partial void OnIndexedChanged();
+    partial void OnLokasiChanging(string value);
+    partial void OnLokasiChanged();
+    #endregion
+		
+		public tbInformasi()
+		{
+			this._tbInfDetails = new EntitySet<tbInfDetail>(new Action<tbInfDetail>(this.attach_tbInfDetails), new Action<tbInfDetail>(this.detach_tbInfDetails));
+			this._tbDomain = default(EntityRef<tbDomain>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DomainID", DbType="Int NOT NULL")]
+		public int DomainID
+		{
+			get
+			{
+				return this._DomainID;
+			}
+			set
+			{
+				if ((this._DomainID != value))
+				{
+					if (this._tbDomain.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnDomainIDChanging(value);
+					this.SendPropertyChanging();
+					this._DomainID = value;
+					this.SendPropertyChanged("DomainID");
+					this.OnDomainIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Judul", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Judul
+		{
+			get
+			{
+				return this._Judul;
+			}
+			set
+			{
+				if ((this._Judul != value))
+				{
+					this.OnJudulChanging(value);
+					this.SendPropertyChanging();
+					this._Judul = value;
+					this.SendPropertyChanged("Judul");
+					this.OnJudulChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Indexed", DbType="Int")]
+		public System.Nullable<int> Indexed
+		{
+			get
+			{
+				return this._Indexed;
+			}
+			set
+			{
+				if ((this._Indexed != value))
+				{
+					this.OnIndexedChanging(value);
+					this.SendPropertyChanging();
+					this._Indexed = value;
+					this.SendPropertyChanged("Indexed");
+					this.OnIndexedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Lokasi", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Lokasi
+		{
+			get
+			{
+				return this._Lokasi;
+			}
+			set
+			{
+				if ((this._Lokasi != value))
+				{
+					this.OnLokasiChanging(value);
+					this.SendPropertyChanging();
+					this._Lokasi = value;
+					this.SendPropertyChanged("Lokasi");
+					this.OnLokasiChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tbInformasi_tbInfDetail", Storage="_tbInfDetails", ThisKey="Id", OtherKey="InformationID")]
+		public EntitySet<tbInfDetail> tbInfDetails
+		{
+			get
+			{
+				return this._tbInfDetails;
+			}
+			set
+			{
+				this._tbInfDetails.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tbDomain_tbInformasi", Storage="_tbDomain", ThisKey="DomainID", OtherKey="Id", IsForeignKey=true)]
+		public tbDomain tbDomain
+		{
+			get
+			{
+				return this._tbDomain.Entity;
+			}
+			set
+			{
+				tbDomain previousValue = this._tbDomain.Entity;
+				if (((previousValue != value) 
+							|| (this._tbDomain.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._tbDomain.Entity = null;
+						previousValue.tbInformasis.Remove(this);
+					}
+					this._tbDomain.Entity = value;
+					if ((value != null))
+					{
+						value.tbInformasis.Add(this);
+						this._DomainID = value.Id;
+					}
+					else
+					{
+						this._DomainID = default(int);
+					}
+					this.SendPropertyChanged("tbDomain");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_tbInfDetails(tbInfDetail entity)
+		{
+			this.SendPropertyChanging();
+			entity.tbInformasi = this;
+		}
+		
+		private void detach_tbInfDetails(tbInfDetail entity)
+		{
+			this.SendPropertyChanging();
+			entity.tbInformasi = null;
 		}
 	}
 }

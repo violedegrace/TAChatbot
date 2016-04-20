@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,18 +49,26 @@ namespace Chatbot
 
         private void manageDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form managedb = new ManageDBForm(this.Text, db);
+            ManageDBForm managedb = new ManageDBForm(this.Text,db);
             this.Visible = false;
             if (managedb.ShowDialog()==DialogResult.OK)
             {
-                
+                for (int i = 0; i < managedb.LokasibaruData.Count; i++)
+                {
+                    File.Copy(managedb.LokasilamaData[i], managedb.LokasibaruData[i]);
+                    db.tbInformasis.InsertAllOnSubmit(managedb.DataBaru);
+                    db.SubmitChanges();
+                }
+            }
+            else
+            {
+                db = new dbDataContext();
             }
             this.Visible = true;
         }
 
         private void rebuildDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
         }
     }
 }
