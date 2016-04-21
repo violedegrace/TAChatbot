@@ -3,7 +3,7 @@
   <Table Name="dbo.tbDomain" Member="tbDomains">
     <Type Name="tbDomain">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Association Name="tbDomain_tbInformasi" Member="tbInformasis" ThisKey="Id" OtherKey="DomainID" Type="tbInformasi" />
     </Type>
   </Table>
@@ -20,10 +20,22 @@
     <Type Name="tbInfDetail">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="InformationID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="info" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
       <Column Name="Awal" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
       <Column Name="Penghubung" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="Akhir" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
       <Association Name="tbInformasi_tbInfDetail" Member="tbInformasi" ThisKey="InformationID" OtherKey="Id" Type="tbInformasi" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbInformasi" Member="tbInformasis">
+    <Type Name="tbInformasi">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DomainID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Judul" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Indexed" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Lokasi" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="tbInformasi_tbInfDetail" Member="tbInfDetails" ThisKey="Id" OtherKey="InformationID" Type="tbInfDetail" />
+      <Association Name="tbDomain_tbInformasi" Member="tbDomain" ThisKey="DomainID" OtherKey="Id" Type="tbDomain" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.tbLog" Member="tbLogs">
@@ -48,17 +60,6 @@
     <Type Name="tbState">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.tbInformasi" Member="tbInformasis">
-    <Type Name="tbInformasi">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="DomainID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Judul" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="Indexed" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Lokasi" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Association Name="tbInformasi_tbInfDetail" Member="tbInfDetails" ThisKey="Id" OtherKey="InformationID" Type="tbInfDetail" />
-      <Association Name="tbDomain_tbInformasi" Member="tbDomain" ThisKey="DomainID" OtherKey="Id" Type="tbDomain" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

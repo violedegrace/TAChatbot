@@ -25,7 +25,7 @@ namespace Chatbot
             Lingkungan.CreateLocation();
             db = new dbDataContext();
             LoginForm login = new LoginForm(db);
-            Engine = new EngineActuator(null);
+            Engine = new EngineActuator("MLM",db);
             
             if (true) //temporary code
             {
@@ -73,6 +73,7 @@ namespace Chatbot
 
         private void rebuildDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Engine.RebuildDatabase();
         }
     }
 }

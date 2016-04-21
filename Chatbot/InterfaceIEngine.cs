@@ -8,7 +8,8 @@ namespace Chatbot
 {
     public interface IEngine
     {
-        void dataIndexing(List<string> loc);
-        void createInvertedIndex();
+
+        void dataIndexing(string args);
+        void createInvertedIndex(string data, int domain, int infID, int InfDetID);
     }
 }

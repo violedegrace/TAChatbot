@@ -73,7 +73,45 @@ namespace Chatbot
             return getEnvirontment() + "Stopword.txt";
         }
 
-
+        // Load Save Term / Inverted Index;
+        public static List<Term> LoadInvertedIndex()
+        {
+            List<Term> lst = new List<Term>();
+            XmlSerializer des = new XmlSerializer(typeof(List<Term>));
+            TextReader reader = new StreamReader(getInvertedIndexLocation());
+            try
+            {
+                object a = des.Deserialize(reader);
+                des = null;
+                reader.Close();
+                reader = null;
+                des = null;
+                return (a as List<Term>);
+            }
+            catch (Exception e)
+            {
+                reader.Close();
+                reader = null;
+                System.Windows.Forms.MessageBox.Show("LoadError : " + e.Message);
+                return null;
+            }
+        }
+        public static void SaveInvertedIndex(List<Term> TermCollection)
+        {
+            XmlSerializer ser = new XmlSerializer(typeof(List<Term>));
+            TextWriter wrt = new StreamWriter(getInvertedIndexLocation());
+            try
+            {
+                ser.Serialize(wrt, TermCollection);
+                wrt.Close();
+                wrt = null;
+                ser = null;
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show("Save Gagal " + e.Message);
+            }
+        }
         #endregion
     }
 }
