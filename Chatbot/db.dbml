@@ -1,19 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="dbTAChatbot" Class="dbDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=EMPC\SQLEXPRESS;Initial Catalog=dbTAChatbot;Integrated Security=True" SettingsObjectName="Chatbot.Properties.Settings" SettingsPropertyName="dbTAChatbotConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=VGL\SQLEXPRESS;Initial Catalog=dbTAChatbot;Integrated Security=True" SettingsObjectName="Chatbot.Properties.Settings" SettingsPropertyName="dbTAChatbotConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.tbDomain" Member="tbDomains">
     <Type Name="tbDomain">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Association Name="tbDomain_tbInformasi" Member="tbInformasis" ThisKey="Id" OtherKey="DomainID" Type="tbInformasi" />
-    </Type>
-  </Table>
-  <Table Name="dbo.tbUser" Member="tbUsers">
-    <Type Name="tbUser">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Username" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="Password" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Association Name="tbUser_tbLog" Member="tbLogs" ThisKey="Id" OtherKey="UserID" Type="tbLog" />
     </Type>
   </Table>
   <Table Name="dbo.tbInfDetail" Member="tbInfDetails">
@@ -60,6 +51,15 @@
     <Type Name="tbState">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbUser" Member="tbUsers">
+    <Type Name="tbUser">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="tbUser_tbLog" Member="tbLogs" ThisKey="Id" OtherKey="UserID" Type="tbLog" />
     </Type>
   </Table>
 </Database>

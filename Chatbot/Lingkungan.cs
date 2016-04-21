@@ -76,11 +76,12 @@ namespace Chatbot
         // Load Save Term / Inverted Index;
         public static List<Term> LoadInvertedIndex()
         {
-            List<Term> lst = new List<Term>();
-            XmlSerializer des = new XmlSerializer(typeof(List<Term>));
-            TextReader reader = new StreamReader(getInvertedIndexLocation());
+            TextReader reader=null;
             try
             {
+                List<Term> lst = new List<Term>();
+                XmlSerializer des = new XmlSerializer(typeof(List<Term>));
+                reader = new StreamReader(getInvertedIndexLocation());
                 object a = des.Deserialize(reader);
                 des = null;
                 reader.Close();
@@ -90,18 +91,21 @@ namespace Chatbot
             }
             catch (Exception e)
             {
-                reader.Close();
-                reader = null;
+                if (reader!=null)
+                {
+                    reader.Close();
+                    reader = null;
+                }
                 System.Windows.Forms.MessageBox.Show("LoadError : " + e.Message);
                 return null;
             }
         }
         public static void SaveInvertedIndex(List<Term> TermCollection)
         {
-            XmlSerializer ser = new XmlSerializer(typeof(List<Term>));
-            TextWriter wrt = new StreamWriter(getInvertedIndexLocation());
             try
             {
+                XmlSerializer ser = new XmlSerializer(typeof(List<Term>));
+                TextWriter wrt = new StreamWriter(getInvertedIndexLocation());
                 ser.Serialize(wrt, TermCollection);
                 wrt.Close();
                 wrt = null;
