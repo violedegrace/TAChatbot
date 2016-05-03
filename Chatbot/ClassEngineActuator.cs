@@ -19,21 +19,44 @@ namespace Chatbot
             model = new EngineMixtureLanguageModel(db);
         }
 
-        public void RebuildDatabase()
+        public void RebuildDatabase(string args)
         {
             if (model==null)
             {
                 model = new EngineMixtureLanguageModel(new dbDataContext());
             }
-            Indexing("all");
+            Indexing(args);
         }
 
-        public void Indexing(string arg)
+        public void Indexing(string args)
         {
-            //args terdiri dari all atau indexed
-            model.dataIndexing(arg);
+            model.dataIndexing(args);
+            if (model is EngineMixtureLanguageModel)
+            {
+                (model as EngineMixtureLanguageModel).HitungPembobotanKata();
+            }
+            if (args.ToLower().Equals("all"))
+            {
+                System.Windows.Forms.MessageBox.Show("Indexing Selesai");
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Pemasukan data baru selesai");
+            } 
         }
-        public void FileCrawler(string args)
+        public void CaclculateMixtureLanguageModel()
+        {
+            if (model is EngineMixtureLanguageModel)
+            {
+                (model as EngineMixtureLanguageModel).HitungPembobotanKata();
+                System.Windows.Forms.MessageBox.Show("Penghitungan Selesai");
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Bukan Mixture Languge Model");
+            }
+        }
+        public void FileCrawler(string args) //uncalled
         {
             //Crawler
             List<string> LokasiFile = new List<string>();

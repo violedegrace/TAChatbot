@@ -73,7 +73,20 @@ namespace Chatbot
 
         private void rebuildDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Engine.RebuildDatabase();
+            DialogResult reIdx = MessageBox.Show("Indexing seluruh data ulang?","Indexing Data",MessageBoxButtons.YesNoCancel);
+            if (reIdx==DialogResult.Yes)
+            {
+                Engine.RebuildDatabase("all");
+            }
+            else if (reIdx == DialogResult.No)
+            {
+                Engine.RebuildDatabase("New");
+            }
+        }
+
+        private void calculateMixtureLanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Engine.CaclculateMixtureLanguageModel();
         }
     }
 }

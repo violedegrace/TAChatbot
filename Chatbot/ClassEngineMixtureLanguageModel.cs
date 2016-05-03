@@ -56,7 +56,6 @@ namespace Chatbot
                 }
             }
             db.SubmitChanges();
-            System.Windows.Forms.MessageBox.Show("Indexing Selesai");
 
         }
 
@@ -88,6 +87,42 @@ namespace Chatbot
             }
             Lingkungan.SaveInvertedIndex(InvertedIndex);
             //hitung pembobotan
+        }
+        public void HitungPembobotanKata()
+        {
+            List<Term> InvertedIndex = Lingkungan.LoadInvertedIndex();
+            if (db==null)
+                db=new dbDataContext();
+            List<tbDomain> Domain = db.tbDomains.ToList(); // seluruh domain yang ada
+            List<int> DomainCount = new List<int>(); // Counter setiap domain
+            for (int i = 0; i < Domain.Count; i++) // inisialisasi counter domain
+                DomainCount.Add(0);
+
+            // Hitung jumlah kata dalam seluruh dokumen dan perdomain
+            int TermCount = 0; //counter kata
+            foreach (var item in InvertedIndex)
+            {
+                TermCount += item.Index.Count;
+                for (int i = 0; i < Domain.Count; i++)
+			    {
+			        DomainCount[i]+=item.Index.Where(x=>x.DomainID==Domain[i].Id).Count();
+			    }
+            }
+
+            //pembobotan
+            foreach (var item in InvertedIndex)
+            {
+                item.Bobot.Clear();
+                for (int i = 0; i < Domain.Count; i++)
+                {
+                    int count = item.Index.Where(x => x.DomainID == Domain[i].Id).Count();
+                    double bobot = Math.Log10((Lingkungan.getLambda(0) * (count / TermCount)) +
+                        (Lingkungan.getLambda(1) * count / DomainCount[i]));
+                    item.Bobot.Add(bobot);
+                }
+            }
+
+            Lingkungan.SaveInvertedIndex(InvertedIndex);
         }
     }
 }

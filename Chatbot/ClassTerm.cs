@@ -23,8 +23,8 @@ namespace Chatbot
             set { _index = value; }
         }
 
-        private List<int> _bobot;
-        public List<int> Bobot
+        private List<double> _bobot;
+        public List<double> Bobot
         {
             get { return _bobot; }
             set { _bobot = value; }

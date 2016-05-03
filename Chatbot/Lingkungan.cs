@@ -35,14 +35,14 @@ namespace Chatbot
                 file.Directory.Create(); // If the directory already exists, this method does nothing.                
             }
         }
-        // Directory Location   ===================================
+        //      Lambda          ===================================
         public static double getLambda(int x)
         {
             if (x > 1)
             {
-                return 0.4;
+                return 0.6;
             }
-            return 0.6;
+            return 0.4;
         }
 
         // Directory Location   ===================================
@@ -116,6 +116,8 @@ namespace Chatbot
                 System.Windows.Forms.MessageBox.Show("Save Gagal " + e.Message);
             }
         }
+
+
         #endregion
     }
 }
