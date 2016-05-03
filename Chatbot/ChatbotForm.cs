@@ -38,5 +38,10 @@ namespace Chatbot
                 this.Dispose();
             }
         }
+
+        private void rebuildDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
