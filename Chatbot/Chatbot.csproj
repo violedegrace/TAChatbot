@@ -51,19 +51,34 @@
     <Compile Include="ChatbotForm.Designer.cs">
       <DependentUpon>ChatbotForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="db.cs">
+      <DependentUpon>db.dbml</DependentUpon>
+    </Compile>
     <Compile Include="db.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>db.dbml</DependentUpon>
     </Compile>
+    <Compile Include="ClassEngineActuator.cs" />
+    <Compile Include="ClassEngineMixtureLanguageModel.cs" />
+    <Compile Include="InterfaceIEngine.cs" />
+    <Compile Include="Lingkungan.cs" />
+    <Compile Include="ClassLocation.cs" />
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ManageDBForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManageDBForm.Designer.cs">
+      <DependentUpon>ManageDBForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ClassTerm.cs" />
     <None Include="db.dbml.layout">
       <DependentUpon>db.dbml</DependentUpon>
     </None>
@@ -72,6 +87,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManageDBForm.resx">
+      <DependentUpon>ManageDBForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

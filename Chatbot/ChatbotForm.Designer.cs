@@ -40,6 +40,7 @@
             this.buttonSend = new System.Windows.Forms.Button();
             this.textBoxInput = new System.Windows.Forms.TextBox();
             this.listBoxConv = new System.Windows.Forms.ListBox();
+            this.calculateMixtureLanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBoxMain.SuspendLayout();
             this.SuspendLayout();
@@ -74,7 +75,8 @@
             // 
             this.dataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.manageDataToolStripMenuItem,
-            this.rebuildDatabaseToolStripMenuItem});
+            this.rebuildDatabaseToolStripMenuItem,
+            this.calculateMixtureLanToolStripMenuItem});
             this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
             this.dataToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
             this.dataToolStripMenuItem.Text = "Data";
@@ -84,6 +86,7 @@
             this.manageDataToolStripMenuItem.Name = "manageDataToolStripMenuItem";
             this.manageDataToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.manageDataToolStripMenuItem.Text = "Manage Data";
+            this.manageDataToolStripMenuItem.Click += new System.EventHandler(this.manageDataToolStripMenuItem_Click);
             // 
             // rebuildDatabaseToolStripMenuItem
             // 
@@ -141,6 +144,13 @@
             this.listBoxConv.Size = new System.Drawing.Size(317, 355);
             this.listBoxConv.TabIndex = 0;
             // 
+            // calculateMixtureLanToolStripMenuItem
+            // 
+            this.calculateMixtureLanToolStripMenuItem.Name = "calculateMixtureLanToolStripMenuItem";
+            this.calculateMixtureLanToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.calculateMixtureLanToolStripMenuItem.Text = "Calculate Model";
+            this.calculateMixtureLanToolStripMenuItem.Click += new System.EventHandler(this.calculateMixtureLanToolStripMenuItem_Click);
+            // 
             // ChatbotForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -150,6 +160,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "ChatbotForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ChatbotForm";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -174,5 +185,6 @@
         private System.Windows.Forms.Button buttonSend;
         private System.Windows.Forms.TextBox textBoxInput;
         private System.Windows.Forms.ListBox listBoxConv;
+        private System.Windows.Forms.ToolStripMenuItem calculateMixtureLanToolStripMenuItem;
     }
 }

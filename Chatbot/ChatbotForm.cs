@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,28 +16,77 @@ namespace Chatbot
         public tbUser currentUser;
         private tbUser bot;
         private dbDataContext db;
+        private EngineActuator Engine;
 
         public ChatbotForm()
         {
+            //Inisialisasi Program
             InitializeComponent();
+            Lingkungan.CreateLocation();
             db = new dbDataContext();
             LoginForm login = new LoginForm(db);
-            if (login.ShowDialog() == DialogResult.OK)
+            Engine = new EngineActuator("MLM",db);
+            
+            if (true) //temporary code
             {
                 bot = db.tbUsers.Where(x => x.Id == 0).FirstOrDefault();
-                currentUser = login.user;
-                //currentUser = db.tbUsers.Where(x => x.Id == 1).FirstOrDefault();
+                currentUser = db.tbUsers.Where(x => x.Id == 1).FirstOrDefault();
                 this.Text = bot.Name + " Chatbot";
+            }
+            //if (login.ShowDialog() == DialogResult.OK)
+            //{
+            //    bot = db.tbUsers.Where(x => x.Id == 0).FirstOrDefault();
+            //    currentUser = login.user;
+            //    //currentUser = db.tbUsers.Where(x => x.Id == 1).FirstOrDefault();
+            //    this.Text = bot.Name + " Chatbot";
+            //}
+            //else
+            //{
+            //    if (System.Windows.Forms.Application.MessageLoop)
+            //        System.Windows.Forms.Application.Exit(); // WinForms app
+            //    else
+            //        System.Environment.Exit(1); // Console app
+            //    this.Close();
+            //    this.Dispose();
+            //}
+        }
+
+        private void manageDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ManageDBForm managedb = new ManageDBForm(this.Text,db);
+            this.Visible = false;
+            if (managedb.ShowDialog()==DialogResult.OK)
+            {
+                for (int i = 0; i < managedb.LokasibaruData.Count; i++)
+                {
+                    File.Copy(managedb.LokasilamaData[i], managedb.LokasibaruData[i]);
+                    db.tbInformasis.InsertAllOnSubmit(managedb.DataBaru);
+                    db.SubmitChanges();
+                }
             }
             else
             {
-                if (System.Windows.Forms.Application.MessageLoop)
-                    System.Windows.Forms.Application.Exit(); // WinForms app
-                else
-                    System.Environment.Exit(1); // Console app
-                this.Close();
-                this.Dispose();
+                db = new dbDataContext();
             }
+            this.Visible = true;
+        }
+
+        private void rebuildDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult reIdx = MessageBox.Show("Indexing seluruh data ulang?","Indexing Data",MessageBoxButtons.YesNoCancel);
+            if (reIdx==DialogResult.Yes)
+            {
+                Engine.RebuildDatabase("all");
+            }
+            else if (reIdx == DialogResult.No)
+            {
+                Engine.RebuildDatabase("New");
+            }
+        }
+
+        private void calculateMixtureLanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Engine.CaclculateMixtureLanguageModel();
         }
 
         private void rebuildDatabaseToolStripMenuItem_Click(object sender, EventArgs e)

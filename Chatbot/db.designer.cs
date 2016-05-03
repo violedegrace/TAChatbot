@@ -188,7 +188,7 @@ namespace Chatbot
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NChar(10)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(50)")]
 		public string Name
 		{
 			get
@@ -426,6 +426,8 @@ namespace Chatbot
 		
 		private System.Nullable<int> _InformationID;
 		
+		private string _info;
+		
 		private string _Awal;
 		
 		private string _Penghubung;
@@ -442,6 +444,8 @@ namespace Chatbot
     partial void OnIdChanged();
     partial void OnInformationIDChanging(System.Nullable<int> value);
     partial void OnInformationIDChanged();
+    partial void OninfoChanging(string value);
+    partial void OninfoChanged();
     partial void OnAwalChanging(string value);
     partial void OnAwalChanged();
     partial void OnPenghubungChanging(string value);
@@ -496,6 +500,26 @@ namespace Chatbot
 					this._InformationID = value;
 					this.SendPropertyChanged("InformationID");
 					this.OnInformationIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_info", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string info
+		{
+			get
+			{
+				return this._info;
+			}
+			set
+			{
+				if ((this._info != value))
+				{
+					this.OninfoChanging(value);
+					this.SendPropertyChanging();
+					this._info = value;
+					this.SendPropertyChanged("info");
+					this.OninfoChanged();
 				}
 			}
 		}
@@ -627,6 +651,10 @@ namespace Chatbot
 		
 		private string _Judul;
 		
+		private System.Nullable<int> _Indexed;
+		
+		private string _Lokasi;
+		
 		private EntitySet<tbInfDetail> _tbInfDetails;
 		
 		private EntityRef<tbDomain> _tbDomain;
@@ -641,6 +669,10 @@ namespace Chatbot
     partial void OnDomainIDChanged();
     partial void OnJudulChanging(string value);
     partial void OnJudulChanged();
+    partial void OnIndexedChanging(System.Nullable<int> value);
+    partial void OnIndexedChanged();
+    partial void OnLokasiChanging(string value);
+    partial void OnLokasiChanged();
     #endregion
 		
 		public tbInformasi()
@@ -694,7 +726,7 @@ namespace Chatbot
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Judul", DbType="NChar(10)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Judul", DbType="Text", UpdateCheck=UpdateCheck.Never)]
 		public string Judul
 		{
 			get
@@ -710,6 +742,46 @@ namespace Chatbot
 					this._Judul = value;
 					this.SendPropertyChanged("Judul");
 					this.OnJudulChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Indexed", DbType="Int")]
+		public System.Nullable<int> Indexed
+		{
+			get
+			{
+				return this._Indexed;
+			}
+			set
+			{
+				if ((this._Indexed != value))
+				{
+					this.OnIndexedChanging(value);
+					this.SendPropertyChanging();
+					this._Indexed = value;
+					this.SendPropertyChanged("Indexed");
+					this.OnIndexedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Lokasi", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Lokasi
+		{
+			get
+			{
+				return this._Lokasi;
+			}
+			set
+			{
+				if ((this._Lokasi != value))
+				{
+					this.OnLokasiChanging(value);
+					this.SendPropertyChanging();
+					this._Lokasi = value;
+					this.SendPropertyChanged("Lokasi");
+					this.OnLokasiChanged();
 				}
 			}
 		}
