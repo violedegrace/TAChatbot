@@ -24,15 +24,18 @@ namespace Chatbot
             List<tbInformasi> InfoList = null;// db.tbInformasis.ToList();
             int prev=0;
             tbInfDetail datadetil=null;
-
             
             if (args.ToLower().Equals("all"))
             {
                 InfoList = db.tbInformasis.ToList();
             }
+            else
+            {
+                InfoList = db.tbInformasis.Where(x => x.Indexed == 0).ToList();
+            }
             for (int i = 0; i < InfoList.Count; i++)
             {
-                if (File.Exists(InfoList[i].Lokasi))
+                if (File.Exists(InfoList[i].Lokasi) && InfoList[i].Indexed==0)
                 {
                     InfoList[i].Indexed = 1;
                     string text = File.ReadAllText(InfoList[i].Lokasi);
@@ -44,10 +47,12 @@ namespace Chatbot
                             datadetil = CreateDataDetil(Fragment[j]);
                             if (datadetil != null)
                                 InfoList[i].tbInfDetails.Add(datadetil);
-                            //createInvertedIndex(string data,int domain,int infID, int InfDetID)
                             createInvertedIndex(Fragment[j], InfoList[i].DomainID, InfoList[i].Id, j);
                         }
                     }
+
+                    File.Move(InfoList[i].Lokasi, Lingkungan.getDataCache() + InfoList[i].tbDomain.Name + "\\" + InfoList[i].Judul);
+                    InfoList[i].Lokasi = Lingkungan.getDataCache() + InfoList[i].tbDomain.Name + "\\" + InfoList[i].Judul;
                 }
             }
             db.SubmitChanges();
@@ -57,19 +62,10 @@ namespace Chatbot
 
         private tbInfDetail CreateDataDetil(string data)
         {
-            try
-            {
-                tbInfDetail baru =db.tbInfDetails.Where(x=>x.info.ToLower()==data.ToLower()).FirstOrDefault();
-                if (baru == null)
-                    baru = new tbInfDetail();
-                baru.info = data;
-                //cari penghubung, awal dan akhir
-                return baru;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            tbInfDetail baru = new tbInfDetail();
+            baru.info = data;
+            //cari penghubung, awal dan akhir
+            return baru;
         }
 
         public void createInvertedIndex(string data,int domain,int infID, int InfDetID)
@@ -89,10 +85,9 @@ namespace Chatbot
                     InvertedIndex.Add(kata);
                 }
                 kata.Index.Add(new Location(domain, infID, InfDetID, i));
-                Lingkungan.SaveInvertedIndex(InvertedIndex);
             }
-
             Lingkungan.SaveInvertedIndex(InvertedIndex);
+            //hitung pembobotan
         }
     }
 }
