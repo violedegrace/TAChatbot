@@ -35,6 +35,7 @@ namespace Chatbot
             {
                 (model as EngineMixtureLanguageModel).HitungPembobotanKata();
             }
+            //indexing berdasarkan permintaan
             if (args.ToLower().Equals("all"))
             {
                 System.Windows.Forms.MessageBox.Show("Indexing Selesai");
