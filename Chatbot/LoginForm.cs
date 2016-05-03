@@ -100,7 +100,9 @@ namespace Chatbot
 
             if (string.IsNullOrWhiteSpace(textBoxLoginPassword.Text) == true || string.IsNullOrWhiteSpace(textBoxLoginPassword.Text) == true)
             {
-                MessageBox.Show("Username atau password kosong. Mohon diisi");
+                labelWarning.Visible = true;
+                labelWarning.Text = "Username Or Password is Empty";
+                labelWarning.ForeColor = Color.Red;
                 this.DialogResult = DialogResult.Retry;
             }
             else

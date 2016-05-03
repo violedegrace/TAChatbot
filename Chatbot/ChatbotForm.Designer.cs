@@ -30,17 +30,18 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.userToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LoginlogoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manageDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rebuildDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.calculateMixtureLanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxMain = new System.Windows.Forms.GroupBox();
             this.buttonSend = new System.Windows.Forms.Button();
             this.textBoxInput = new System.Windows.Forms.TextBox();
             this.listBoxConv = new System.Windows.Forms.ListBox();
-            this.calculateMixtureLanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBoxMain.SuspendLayout();
             this.SuspendLayout();
@@ -60,16 +61,18 @@
             // userToolStripMenuItem
             // 
             this.userToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.logoutToolStripMenuItem});
+            this.LoginlogoutToolStripMenuItem,
+            this.exitToolStripMenuItem});
             this.userToolStripMenuItem.Name = "userToolStripMenuItem";
             this.userToolStripMenuItem.Size = new System.Drawing.Size(42, 20);
             this.userToolStripMenuItem.Text = "User";
             // 
-            // logoutToolStripMenuItem
+            // LoginlogoutToolStripMenuItem
             // 
-            this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
-            this.logoutToolStripMenuItem.Text = "Logout";
+            this.LoginlogoutToolStripMenuItem.Name = "LoginlogoutToolStripMenuItem";
+            this.LoginlogoutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.LoginlogoutToolStripMenuItem.Text = "Logout";
+            this.LoginlogoutToolStripMenuItem.Click += new System.EventHandler(this.LoginlogoutToolStripMenuItem_Click);
             // 
             // dataToolStripMenuItem
             // 
@@ -95,6 +98,13 @@
             this.rebuildDatabaseToolStripMenuItem.Text = "Rebuild Database";
             this.rebuildDatabaseToolStripMenuItem.Click += new System.EventHandler(this.rebuildDatabaseToolStripMenuItem_Click);
             // 
+            // calculateMixtureLanToolStripMenuItem
+            // 
+            this.calculateMixtureLanToolStripMenuItem.Name = "calculateMixtureLanToolStripMenuItem";
+            this.calculateMixtureLanToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.calculateMixtureLanToolStripMenuItem.Text = "Calculate Model";
+            this.calculateMixtureLanToolStripMenuItem.Click += new System.EventHandler(this.calculateMixtureLanToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -106,7 +116,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // groupBoxMain
@@ -144,12 +154,12 @@
             this.listBoxConv.Size = new System.Drawing.Size(317, 355);
             this.listBoxConv.TabIndex = 0;
             // 
-            // calculateMixtureLanToolStripMenuItem
+            // exitToolStripMenuItem
             // 
-            this.calculateMixtureLanToolStripMenuItem.Name = "calculateMixtureLanToolStripMenuItem";
-            this.calculateMixtureLanToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.calculateMixtureLanToolStripMenuItem.Text = "Calculate Model";
-            this.calculateMixtureLanToolStripMenuItem.Click += new System.EventHandler(this.calculateMixtureLanToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // ChatbotForm
             // 
@@ -180,11 +190,12 @@
         private System.Windows.Forms.ToolStripMenuItem rebuildDatabaseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem LoginlogoutToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupBoxMain;
         private System.Windows.Forms.Button buttonSend;
         private System.Windows.Forms.TextBox textBoxInput;
         private System.Windows.Forms.ListBox listBoxConv;
         private System.Windows.Forms.ToolStripMenuItem calculateMixtureLanToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
     }
 }

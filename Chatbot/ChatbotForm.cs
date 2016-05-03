@@ -13,10 +13,11 @@ namespace Chatbot
 {
     public partial class ChatbotForm : Form
     {
-        public tbUser currentUser;
+        public tbUser currentUser=null;
         private tbUser bot;
         private dbDataContext db;
         private EngineActuator Engine;
+        private DialogResult Login;
 
         public ChatbotForm()
         {
@@ -24,31 +25,35 @@ namespace Chatbot
             InitializeComponent();
             Lingkungan.CreateLocation();
             db = new dbDataContext();
-            LoginForm login = new LoginForm(db);
-            Engine = new EngineActuator("MLM",db);
-            
-            if (true) //temporary code
-            {
-                bot = db.tbUsers.Where(x => x.Id == 0).FirstOrDefault();
-                currentUser = db.tbUsers.Where(x => x.Id == 1).FirstOrDefault();
-                this.Text = bot.Name + " Chatbot";
-            }
-            //if (login.ShowDialog() == DialogResult.OK)
+            Engine = new EngineActuator("MLM", db);
+
+            //Login
+            //if (true) //temporary code
             //{
             //    bot = db.tbUsers.Where(x => x.Id == 0).FirstOrDefault();
-            //    currentUser = login.user;
-            //    //currentUser = db.tbUsers.Where(x => x.Id == 1).FirstOrDefault();
+            //    currentUser = db.tbUsers.Where(x => x.Id == 1).FirstOrDefault();
             //    this.Text = bot.Name + " Chatbot";
             //}
-            //else
-            //{
-            //    if (System.Windows.Forms.Application.MessageLoop)
-            //        System.Windows.Forms.Application.Exit(); // WinForms app
-            //    else
-            //        System.Environment.Exit(1); // Console app
-            //    this.Close();
-            //    this.Dispose();
-            //}
+
+            bot = db.tbUsers.Where(x => x.Id == 0).FirstOrDefault();
+            this.Text = bot.Name + " Chatbot";
+            try
+            {
+                LoginlogoutToolStripMenuItem.PerformClick();
+                if (Login == DialogResult.Cancel)
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception)
+            {
+                if (System.Windows.Forms.Application.MessageLoop)
+                    System.Windows.Forms.Application.Exit(); // WinForms app
+                else
+                    System.Environment.Exit(1); // Console app
+                this.Close();
+                this.Dispose();
+            }
         }
 
         private void manageDataToolStripMenuItem_Click(object sender, EventArgs e)
@@ -89,9 +94,63 @@ namespace Chatbot
             Engine.CaclculateMixtureLanguageModel();
         }
 
-        private void rebuildDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LoginlogoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Jika baru dibuka (currentUser nya null) maka cukup lakukan proses login,
+            // jika sudah ada user maka semua proses di save
+
+            LoginForm login = new LoginForm(db);
+            DialogResult loginDS;
+            do
+            {
+                loginDS = login.ShowDialog();
+            } while (loginDS == DialogResult.Retry);
+
+            if (loginDS == DialogResult.OK && currentUser!=null)
+            {
+                //save progress
+                MessageBox.Show("Saving Progress...\nCreating new Conversation");
+            }
+            if (loginDS == DialogResult.OK)// && login.user.Id!=currentUser.Id)
+            {
+                this.Login = DialogResult.OK;
+                currentUser = login.user;
+                cekAdmin();
+            }
+            else
+        	{
+                this.Login = DialogResult.Cancel;
+            }
+        }
+        private void cekAdmin()
+        {
+            if (currentUser.Id > 1)
+            {
+                dataToolStripMenuItem.Enabled = false;
+                dataToolStripMenuItem.Visible = false;
+            }
+            else
+            {
+                dataToolStripMenuItem.Enabled = true;
+                dataToolStripMenuItem.Visible = true;
+            }
 
         }
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Exit Program??","Warning",MessageBoxButtons.YesNo)==DialogResult.Yes)
+            {
+                //Save Progress dengan didahului messagebox ya tidak
+
+                
+                if (System.Windows.Forms.Application.MessageLoop)
+                    System.Windows.Forms.Application.Exit(); // WinForms app
+                else
+                    System.Environment.Exit(1); // Console app
+                this.Close();
+                this.Dispose();                
+            }
+        }
+
     }
 }
