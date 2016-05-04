@@ -18,6 +18,7 @@ namespace Chatbot
         private dbDataContext db;
         private EngineActuator Engine;
         private DialogResult Login;
+        private Stack<string> Conversation;
 
         public ChatbotForm()
         {
@@ -26,34 +27,45 @@ namespace Chatbot
             Lingkungan.CreateLocation();
             db = new dbDataContext();
             Engine = new EngineActuator("MLM", db);
+            Conversation = new Stack<string>();
 
             //Login
-            //if (true) //temporary code
-            //{
-            //    bot = db.tbUsers.Where(x => x.Id == 0).FirstOrDefault();
-            //    currentUser = db.tbUsers.Where(x => x.Id == 1).FirstOrDefault();
-            //    this.Text = bot.Name + " Chatbot";
-            //}
+            if (true) //temporary code
+            {
+                bot = db.tbUsers.Where(x => x.Id == 0).FirstOrDefault();
+                currentUser = db.tbUsers.Where(x => x.Id == 1).FirstOrDefault();
+                this.Text = bot.Name + " Chatbot";
+            }
 
             bot = db.tbUsers.Where(x => x.Id == 0).FirstOrDefault();
-            this.Text = bot.Name + " Chatbot";
-            try
-            {
-                LoginlogoutToolStripMenuItem.PerformClick();
-                if (Login == DialogResult.Cancel)
-                {
-                    throw new Exception();
-                }
-            }
-            catch (Exception)
-            {
-                if (System.Windows.Forms.Application.MessageLoop)
-                    System.Windows.Forms.Application.Exit(); // WinForms app
-                else
-                    System.Environment.Exit(1); // Console app
-                this.Close();
-                this.Dispose();
-            }
+            //this.Text = bot.Name + " Chatbot";
+            //try
+            //{
+            //    LoginlogoutToolStripMenuItem.PerformClick();
+            //    if (Login == DialogResult.Cancel)
+            //    {
+            //        throw new Exception();
+            //    }
+            //}
+            //catch (Exception)
+            //{
+            //    if (System.Windows.Forms.Application.MessageLoop)
+            //        System.Windows.Forms.Application.Exit(); // WinForms app
+            //    else
+            //        System.Environment.Exit(1); // Console app
+            //    this.Close();
+            //    this.Dispose();
+            //}
+
+            string welcome ="Welcome "+currentUser.Name+" to "+bot.Name+" Chatbot.";
+            Conversation.Push(welcome);
+            refreshListBoxChat();
+
+        }
+
+        private void refreshListBoxChat()
+        {
+            listBoxConv.DataSource = Conversation.ToList();
         }
 
         private void manageDataToolStripMenuItem_Click(object sender, EventArgs e)
@@ -150,6 +162,11 @@ namespace Chatbot
                 this.Close();
                 this.Dispose();                
             }
+        }
+
+        private void buttonSend_Click(object sender, EventArgs e)
+        {
+
         }
 
     }

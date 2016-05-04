@@ -31,6 +31,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.userToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LoginlogoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manageDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rebuildDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,7 +42,6 @@
             this.buttonSend = new System.Windows.Forms.Button();
             this.textBoxInput = new System.Windows.Forms.TextBox();
             this.listBoxConv = new System.Windows.Forms.ListBox();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBoxMain.SuspendLayout();
             this.SuspendLayout();
@@ -70,9 +70,16 @@
             // LoginlogoutToolStripMenuItem
             // 
             this.LoginlogoutToolStripMenuItem.Name = "LoginlogoutToolStripMenuItem";
-            this.LoginlogoutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.LoginlogoutToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.LoginlogoutToolStripMenuItem.Text = "Logout";
             this.LoginlogoutToolStripMenuItem.Click += new System.EventHandler(this.LoginlogoutToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // dataToolStripMenuItem
             // 
@@ -116,7 +123,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // groupBoxMain
@@ -138,6 +145,7 @@
             this.buttonSend.TabIndex = 2;
             this.buttonSend.Text = "send";
             this.buttonSend.UseVisualStyleBackColor = true;
+            this.buttonSend.Click += new System.EventHandler(this.buttonSend_Click);
             // 
             // textBoxInput
             // 
@@ -153,13 +161,6 @@
             this.listBoxConv.Name = "listBoxConv";
             this.listBoxConv.Size = new System.Drawing.Size(317, 355);
             this.listBoxConv.TabIndex = 0;
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // ChatbotForm
             // 
