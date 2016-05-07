@@ -138,6 +138,14 @@ namespace Chatbot
 				return this.GetTable<tbState>();
 			}
 		}
+		
+		public System.Data.Linq.Table<tbStatePrg> tbStatePrgs
+		{
+			get
+			{
+				return this.GetTable<tbStatePrg>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tbDomain")]
@@ -1125,7 +1133,7 @@ namespace Chatbot
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Question", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Question", DbType="VarChar(1000)")]
 		public string Question
 		{
 			get
@@ -1302,6 +1310,51 @@ namespace Chatbot
 			if ((this.PropertyChanged != null))
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tbStatePrgs")]
+	public partial class tbStatePrg
+	{
+		
+		private int _StateID;
+		
+		private System.Nullable<int> _NextStateID;
+		
+		public tbStatePrg()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StateID", DbType="Int NOT NULL")]
+		public int StateID
+		{
+			get
+			{
+				return this._StateID;
+			}
+			set
+			{
+				if ((this._StateID != value))
+				{
+					this._StateID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NextStateID", DbType="Int")]
+		public System.Nullable<int> NextStateID
+		{
+			get
+			{
+				return this._NextStateID;
+			}
+			set
+			{
+				if ((this._NextStateID != value))
+				{
+					this._NextStateID = value;
+				}
 			}
 		}
 	}

@@ -128,6 +128,9 @@
             // 
             // groupBoxMain
             // 
+            this.groupBoxMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxMain.Controls.Add(this.buttonSend);
             this.groupBoxMain.Controls.Add(this.textBoxInput);
             this.groupBoxMain.Controls.Add(this.listBoxConv);
@@ -139,6 +142,7 @@
             // 
             // buttonSend
             // 
+            this.buttonSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSend.Location = new System.Drawing.Point(252, 374);
             this.buttonSend.Name = "buttonSend";
             this.buttonSend.Size = new System.Drawing.Size(58, 23);
@@ -149,6 +153,8 @@
             // 
             // textBoxInput
             // 
+            this.textBoxInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxInput.Location = new System.Drawing.Point(0, 377);
             this.textBoxInput.Name = "textBoxInput";
             this.textBoxInput.Size = new System.Drawing.Size(239, 20);
@@ -156,9 +162,12 @@
             // 
             // listBoxConv
             // 
+            this.listBoxConv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listBoxConv.FormattingEnabled = true;
             this.listBoxConv.Location = new System.Drawing.Point(0, 8);
             this.listBoxConv.Name = "listBoxConv";
+            this.listBoxConv.ScrollAlwaysVisible = true;
             this.listBoxConv.Size = new System.Drawing.Size(317, 355);
             this.listBoxConv.TabIndex = 0;
             // 

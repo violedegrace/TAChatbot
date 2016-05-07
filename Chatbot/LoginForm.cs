@@ -98,7 +98,8 @@ namespace Chatbot
              * masukan dari user di validasi, kosong atau tidak
              */
 
-            if (string.IsNullOrWhiteSpace(textBoxLoginPassword.Text) == true || string.IsNullOrWhiteSpace(textBoxLoginPassword.Text) == true)
+            if (string.IsNullOrWhiteSpace(textBoxLoginPassword.Text) == true
+                || string.IsNullOrWhiteSpace(textBoxLoginPassword.Text) == true)
             {
                 labelWarning.Visible = true;
                 labelWarning.Text = "Username Or Password is Empty";
@@ -109,7 +110,7 @@ namespace Chatbot
             {
                 tbUser cek = db.tbUsers.Where(i => i.Username == textBoxLoginUsername.Text
                     && i.Password==textBoxLoginPassword.Text).FirstOrDefault();
-                if (cek==null) // make or for the system name
+                if (cek==null || cek.Id==0) // make or for the system name
                 {
                     labelWarning.Visible = true;
                     labelWarning.Text = "Wrong Username Or Password";

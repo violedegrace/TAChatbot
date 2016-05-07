@@ -11,5 +11,6 @@ namespace Chatbot
 
         void dataIndexing(string args);
         void createInvertedIndex(string data, int domain, int infID, int InfDetID);
+        tbInfDetail[] PencarianInformasi(Dialogue inpt,int domain,List<Term> extraInfo);
     }
 }

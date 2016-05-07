@@ -51,6 +51,8 @@
     <Compile Include="ChatbotForm.Designer.cs">
       <DependentUpon>ChatbotForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ClassDialogue.cs" />
+    <Compile Include="ClassDialogueManager.cs" />
     <Compile Include="db.cs">
       <DependentUpon>db.dbml</DependentUpon>
     </Compile>

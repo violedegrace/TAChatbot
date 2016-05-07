@@ -22,7 +22,6 @@ namespace Chatbot
         public void dataIndexing(string args)
         {
             List<tbInformasi> InfoList = null;// db.tbInformasis.ToList();
-            int prev=0;
             tbInfDetail datadetil=null;
             
             if (args.ToLower().Equals("all"))
@@ -35,7 +34,7 @@ namespace Chatbot
             }
             for (int i = 0; i < InfoList.Count; i++)
             {
-                if (File.Exists(InfoList[i].Lokasi) && InfoList[i].Indexed==0)
+                if (File.Exists(InfoList[i].Lokasi))// && InfoList[i].Indexed==0)
                 {
                     InfoList[i].Indexed = 1;
                     string text = File.ReadAllText(InfoList[i].Lokasi);
@@ -45,7 +44,7 @@ namespace Chatbot
                         if (!String.IsNullOrWhiteSpace(Fragment[j]))
                         {
                             datadetil = CreateDataDetil(Fragment[j]);
-                            if (datadetil != null)
+                            if (datadetil != null && db.tbInfDetails.Where(x=>x.info.ToString()==datadetil.info.ToString()).FirstOrDefault()==null)
                                 InfoList[i].tbInfDetails.Add(datadetil);
                             createInvertedIndex(Fragment[j], InfoList[i].DomainID, InfoList[i].Id, j);
                         }
@@ -55,21 +54,48 @@ namespace Chatbot
                     InfoList[i].Lokasi = Lingkungan.getDataCache() + InfoList[i].tbDomain.Name + "\\" + InfoList[i].Judul;
                 }
             }
+            if (File.Exists(Lingkungan.getInvertedIndexLocation()))
+            {
+                HitungPembobotanKata();
+            }
             db.SubmitChanges();
 
         }
-
-        private tbInfDetail CreateDataDetil(string data)
+        private tbInfDetail CreateDataDetil(string input)
         {
             tbInfDetail baru = new tbInfDetail();
-            baru.info = data;
+            baru.info = input;
             //cari penghubung, awal dan akhir
-            return baru;
+            try
+            {
+                string[] konjungsi = { "jika", "ketika", "tetapi", "seandainya", "supaya", "walaupun", "seperti", "karena", "sehingga", "bahwa", "dan", "atau", "adalah", "ataupun" };
+                string separator = "";
+                foreach (string item in konjungsi)
+                {
+                    if (input.ToLower().Contains(item) == true)
+                    {
+                        separator = item;
+                        break;
+                    }
+                }
+                if (separator != "")
+                {
+                    baru.Awal=(input.Substring(0, input.IndexOf(separator)));
+                    baru.Akhir=(input.Substring(input.IndexOf(separator) + separator.Length + 1, input.Length - (input.IndexOf(separator) + separator.Length + 1)));
+                    baru.Penghubung=(separator);
+                }
+                return baru;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
-
         public void createInvertedIndex(string data,int domain,int infID, int InfDetID)
         {
             List<string> words = Regex.Split(data, @"[^A-Za-z0-9]").Where(i => i != string.Empty).ToList();
+            List<string> stopwords = Lingkungan.getStopWordList();
+
             List<Term> InvertedIndex = Lingkungan.LoadInvertedIndex();
             if (InvertedIndex == null)
                 InvertedIndex = new List<Term>();
@@ -80,8 +106,16 @@ namespace Chatbot
                 kata = InvertedIndex.Where(x => x.Word.ToLower().Equals(words[i].ToLower())).FirstOrDefault();
                 if (kata == null){
                     kata = new Term();
-                    kata.Word = words[i];
+                    kata.Word = words[i].ToLower();
                     InvertedIndex.Add(kata);
+                }
+                if (stopwords!=null && stopwords.Where(x=>x.ToLower().Equals(words[i].ToLower())).Count()>0)
+                {
+                    kata.StopWord = true;
+                }
+                else
+                {
+                    kata.StopWord = false;
                 }
                 kata.Index.Add(new Location(domain, infID, InfDetID, i));
             }
@@ -91,6 +125,8 @@ namespace Chatbot
         public void HitungPembobotanKata()
         {
             List<Term> InvertedIndex = Lingkungan.LoadInvertedIndex();
+            if (InvertedIndex==null)
+                InvertedIndex = new List<Term>();
             if (db==null)
                 db=new dbDataContext();
             List<tbDomain> Domain = db.tbDomains.ToList(); // seluruh domain yang ada
@@ -109,6 +145,17 @@ namespace Chatbot
 			    }
             }
 
+            for (int i = 1; i < DomainCount.Count; i++)
+            {
+                if (DomainCount[i]==0)
+                {
+                    for (int j = 1; j < DomainCount.Count; j++)
+                    {
+                        DomainCount[i]++;
+                    }
+                    break;
+                }
+            }
             //pembobotan
             foreach (var item in InvertedIndex)
             {
@@ -121,8 +168,54 @@ namespace Chatbot
                     item.Bobot.Add(bobot);
                 }
             }
-
             Lingkungan.SaveInvertedIndex(InvertedIndex);
         }
+        public tbInfDetail[] PencarianInformasi(Dialogue inpt, int domain,List<Term> extra)
+        {
+            List<tbInfDetail> dataDomain = db.tbInfDetails.Where(x=>x.tbInformasi.DomainID==domain).ToList();
+            List<decimal> bobot = new List<decimal>();
+            List<Term> qry = inpt.StringToTerm();
+            if (extra != null)
+            {
+                foreach (var item in extra)
+                {
+                    if (qry.Where(x=>x.Word==item.Word).FirstOrDefault()==null)
+                    {
+                        qry.Add(item);
+                    }
+                }
+            }
+            int TermCount = 0;
+            foreach (var item in Lingkungan.LoadInvertedIndex())
+                TermCount += item.Index.Count;
+            decimal termC = (decimal)TermCount;
+
+            decimal b;
+            for (int i = 0; i < dataDomain.Count; i++)
+            {
+                string[] fragment = dataDomain[i].info.Split(' ').Where(x => string.IsNullOrWhiteSpace(x) == false).ToArray();
+                b = 1;
+                foreach (var item in qry)
+                {
+                    decimal FragmentTermcounter = Convert.ToDecimal(fragment.Where(x => x.ToLower().Contains(item.Word.ToLower())).Count());
+                    decimal FragmentCounter = Convert.ToDecimal(fragment.Count());
+                    decimal itemCounter = Convert.ToDecimal(item.Bobot.Count);
+                    b = b * ((FragmentTermcounter / FragmentCounter) * Convert.ToDecimal(Lingkungan.getLambda(1)) +
+                        (itemCounter / termC) * Convert.ToDecimal(Lingkungan.getLambda(0)));
+                }
+                bobot.Add(b);
+            }
+
+            List<tbInfDetail> top10 = new List<tbInfDetail>();
+            while (dataDomain.Count > 0 && top10.Count < 10)
+            {
+                int idx = bobot.LastIndexOf(bobot.Max());
+                top10.Add(dataDomain[idx]);
+                bobot.RemoveAt(idx);
+                dataDomain.RemoveAt(idx);
+            }
+            return top10.ToArray();
+        }
+        
     }
 }

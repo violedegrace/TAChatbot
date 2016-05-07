@@ -35,10 +35,36 @@ namespace Chatbot
                 file.Directory.Create(); // If the directory already exists, this method does nothing.                
             }
         }
+        //     StopWords       ===================================
+        public static List<string> getStopWordList()
+        {
+            List<string> sw=null;
+            try
+            {
+                if (File.Exists(@getStopWordLocation()))
+                {
+                    sw = new List<string>();
+                    foreach (var item in File.ReadAllLines(getStopWordLocation()).Where(x=>string.IsNullOrWhiteSpace(x)==false))
+                    {
+                        sw.Add(item.ToLower());
+                    }
+                    return sw;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         //      Lambda          ===================================
         public static double getLambda(int x)
         {
-            if (x > 1)
+            if (x > 0)
             {
                 return 0.6;
             }
@@ -70,7 +96,7 @@ namespace Chatbot
         }
         public static string getStopWordLocation()
         {
-            return getEnvirontment() + "Stopword.txt";
+            return getEnvirontment() + "Stopwords.txt";
         }
 
         // Load Save Term / Inverted Index;
@@ -106,7 +132,8 @@ namespace Chatbot
             {
                 XmlSerializer ser = new XmlSerializer(typeof(List<Term>));
                 TextWriter wrt = new StreamWriter(getInvertedIndexLocation());
-                ser.Serialize(wrt, TermCollection);
+                List<Term> Index = TermCollection.OrderBy(x=>x.Word).ToList();
+                ser.Serialize(wrt, Index);
                 wrt.Close();
                 wrt = null;
                 ser = null;

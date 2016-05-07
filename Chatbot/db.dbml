@@ -51,7 +51,7 @@
     <Type Name="tbLogDetail">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="LogID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Question" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Question" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
       <Column Name="Answer" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
       <Association Name="tbLog_tbLogDetail" Member="tbLog" ThisKey="LogID" OtherKey="Id" Type="tbLog" IsForeignKey="true" />
     </Type>
@@ -60,6 +60,16 @@
     <Type Name="tbState">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="tbState_tbStatePrg" Member="tbStatePrgs" ThisKey="Id" OtherKey="StateID" Type="tbStatePrg" />
+      <Association Name="tbState_tbStatePrg1" Member="tbStatePrgs1" ThisKey="Id" OtherKey="NextStateID" Type="tbStatePrg" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbStatePrgs" Member="tbStatePrgs">
+    <Type Name="tbStatePrg">
+      <Column Name="StateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NextStateID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="tbState_tbStatePrg" Member="tbState" ThisKey="StateID" OtherKey="Id" Type="tbState" IsForeignKey="true" />
+      <Association Name="tbState_tbStatePrg1" Member="tbState1" ThisKey="NextStateID" OtherKey="Id" Type="tbState" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

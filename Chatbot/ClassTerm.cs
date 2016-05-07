@@ -15,8 +15,8 @@ namespace Chatbot
             get { return _kata; }
             set { _kata = value; }
         }
-        private List<Location> _index;
 
+        private List<Location> _index;
         public List<Location> Index
         {
             get { return _index; }
@@ -28,6 +28,13 @@ namespace Chatbot
         {
             get { return _bobot; }
             set { _bobot = value; }
+        }
+
+        private bool _stopWord;
+        public bool StopWord
+        {
+            get { return _stopWord; }
+            set { _stopWord = value; }
         }
                 
         public Term()

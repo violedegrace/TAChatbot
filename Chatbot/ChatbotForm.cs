@@ -13,12 +13,13 @@ namespace Chatbot
 {
     public partial class ChatbotForm : Form
     {
-        public tbUser currentUser=null;
-        private tbUser bot;
         private dbDataContext db;
         private EngineActuator Engine;
+        private DialogueManager DM;
+
+        public tbUser currentUser = null;
         private DialogResult Login;
-        private Stack<string> Conversation;
+        private tbUser bot;
 
         public ChatbotForm()
         {
@@ -27,47 +28,45 @@ namespace Chatbot
             Lingkungan.CreateLocation();
             db = new dbDataContext();
             Engine = new EngineActuator("MLM", db);
-            Conversation = new Stack<string>();
+            bot = db.tbUsers.Where(x => x.Id == 0).FirstOrDefault();
+            DM = new DialogueManager(db,bot);
 
+            //bot define
+            bool testing = true;
             //Login
-            if (true) //temporary code
+            if (testing) //temporary code
             {
-                bot = db.tbUsers.Where(x => x.Id == 0).FirstOrDefault();
                 currentUser = db.tbUsers.Where(x => x.Id == 1).FirstOrDefault();
                 this.Text = bot.Name + " Chatbot";
             }
-
-            bot = db.tbUsers.Where(x => x.Id == 0).FirstOrDefault();
-            //this.Text = bot.Name + " Chatbot";
-            //try
-            //{
-            //    LoginlogoutToolStripMenuItem.PerformClick();
-            //    if (Login == DialogResult.Cancel)
-            //    {
-            //        throw new Exception();
-            //    }
-            //}
-            //catch (Exception)
-            //{
-            //    if (System.Windows.Forms.Application.MessageLoop)
-            //        System.Windows.Forms.Application.Exit(); // WinForms app
-            //    else
-            //        System.Environment.Exit(1); // Console app
-            //    this.Close();
-            //    this.Dispose();
-            //}
-
-            string welcome ="Welcome "+currentUser.Name+" to "+bot.Name+" Chatbot.";
-            Conversation.Push(welcome);
+            else
+            {
+                #region True Initiation
+                this.Text = bot.Name + " Chatbot";
+                try
+                {
+                    LoginlogoutToolStripMenuItem.PerformClick();
+                    if (Login == DialogResult.Cancel)
+                    {
+                        throw new Exception();
+                    }
+                }
+                catch (Exception)
+                {
+                    if (System.Windows.Forms.Application.MessageLoop)
+                        System.Windows.Forms.Application.Exit(); // WinForms app
+                    else
+                        System.Environment.Exit(1); // Console app
+                    this.Close();
+                    this.Dispose();
+                }
+                #endregion
+            }
+            DM.ManageDialogue(bot, "Welcome " + currentUser.Name + " to " + bot.Name + " Chatbot.",null);
             refreshListBoxChat();
-
+            this.AcceptButton = this.buttonSend;
         }
-
-        private void refreshListBoxChat()
-        {
-            listBoxConv.DataSource = Conversation.ToList();
-        }
-
+        #region DataBase
         private void manageDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ManageDBForm managedb = new ManageDBForm(this.Text,db);
@@ -105,7 +104,9 @@ namespace Chatbot
         {
             Engine.CaclculateMixtureLanguageModel();
         }
+        #endregion
 
+        #region Manage User
         private void LoginlogoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Jika baru dibuka (currentUser nya null) maka cukup lakukan proses login,
@@ -118,7 +119,7 @@ namespace Chatbot
                 loginDS = login.ShowDialog();
             } while (loginDS == DialogResult.Retry);
 
-            if (loginDS == DialogResult.OK && currentUser!=null)
+            if (loginDS == DialogResult.OK && currentUser != null)
             {
                 //save progress
                 MessageBox.Show("Saving Progress...\nCreating new Conversation");
@@ -127,10 +128,16 @@ namespace Chatbot
             {
                 this.Login = DialogResult.OK;
                 currentUser = login.user;
+                DM = new DialogueManager(db, bot);
                 cekAdmin();
+                refreshListBoxChat();
+                textBoxInput.Enabled = true;
+                buttonSend.Enabled = true;
+                listBoxConv.Enabled = true;
+
             }
             else
-        	{
+            {
                 this.Login = DialogResult.Cancel;
             }
         }
@@ -150,24 +157,53 @@ namespace Chatbot
         }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Exit Program??","Warning",MessageBoxButtons.YesNo)==DialogResult.Yes)
+            if (MessageBox.Show("Exit Program??", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 //Save Progress dengan didahului messagebox ya tidak
 
-                
+
                 if (System.Windows.Forms.Application.MessageLoop)
                     System.Windows.Forms.Application.Exit(); // WinForms app
                 else
                     System.Environment.Exit(1); // Console app
                 this.Close();
-                this.Dispose();                
+                this.Dispose();
             }
+        }    
+        #endregion
+
+        #region Dialogue
+        private void refreshListBoxChat()
+        {
+            List<string> lst = DM.Conversation.Where(x=>x!=null).Select(x => x.ToString()).ToList();
+            lst.Reverse();
+            listBoxConv.DataSource = lst;
+            int visibleItems = listBoxConv.ClientSize.Height / listBoxConv.ItemHeight;
+            listBoxConv.TopIndex = Math.Max(listBoxConv.Items.Count - visibleItems + 1, 0);
         }
 
         private void buttonSend_Click(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(textBoxInput.Text))
+            {
+                buttonSend.Enabled = false;
+                DM.ManageDialogue(currentUser, textBoxInput.Text, Engine);
+                //            MessageBox.Show(DM.Conversation.Count.ToString());
+                refreshListBoxChat();
+                textBoxInput.Text = "";
+                if (DM.CurrentState.Id < 6)
+                    buttonSend.Enabled = true;
+                else
+                {
+                    textBoxInput.Enabled = false;
+                    buttonSend.Enabled = false;
+                    listBoxConv.Enabled = false;
+                    MessageBox.Show("Silahkan Melakukan login Kembali");
+                }
+            }
+        }        
+        #endregion
 
-        }
 
     }
 }

@@ -12,13 +12,12 @@ namespace Chatbot
         IEngine model;
         List<string> locations;
         dbDataContext db;
-        List<tbInformasi> tobeIndexed;
+//        List<tbInformasi> tobeIndexed;
         public EngineActuator(string args, dbDataContext database)
         {
             db = database;
             model = new EngineMixtureLanguageModel(db);
         }
-
         public void RebuildDatabase(string args)
         {
             if (model==null)
@@ -27,7 +26,6 @@ namespace Chatbot
             }
             Indexing(args);
         }
-
         public void Indexing(string args)
         {
             model.dataIndexing(args);
@@ -96,6 +94,10 @@ namespace Chatbot
                 System.Windows.Forms.MessageBox.Show("Gagal Melakukan Crawling");
             }
             locations = FileLocation;
+        }
+        public tbInfDetail[] PencarianInformasi(Dialogue inpt,int domain, List<Term> extraInfo)
+        {
+            return model.PencarianInformasi(inpt, domain, extraInfo);
         }
     }
 }
