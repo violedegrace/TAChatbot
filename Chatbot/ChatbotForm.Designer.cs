@@ -42,6 +42,7 @@
             this.buttonSend = new System.Windows.Forms.Button();
             this.textBoxInput = new System.Windows.Forms.TextBox();
             this.listBoxConv = new System.Windows.Forms.ListBox();
+            this.listBoxPosJawaban = new System.Windows.Forms.ListBox();
             this.menuStrip1.SuspendLayout();
             this.groupBoxMain.SuspendLayout();
             this.SuspendLayout();
@@ -128,8 +129,7 @@
             // 
             // groupBoxMain
             // 
-            this.groupBoxMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBoxMain.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxMain.Controls.Add(this.buttonSend);
             this.groupBoxMain.Controls.Add(this.textBoxInput);
@@ -171,11 +171,23 @@
             this.listBoxConv.Size = new System.Drawing.Size(317, 355);
             this.listBoxConv.TabIndex = 0;
             // 
+            // listBoxPosJawaban
+            // 
+            this.listBoxPosJawaban.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBoxPosJawaban.FormattingEnabled = true;
+            this.listBoxPosJawaban.Location = new System.Drawing.Point(12, 433);
+            this.listBoxPosJawaban.Name = "listBoxPosJawaban";
+            this.listBoxPosJawaban.Size = new System.Drawing.Size(317, 186);
+            this.listBoxPosJawaban.TabIndex = 2;
+            // 
             // ChatbotForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(341, 439);
+            this.ClientSize = new System.Drawing.Size(341, 626);
+            this.Controls.Add(this.listBoxPosJawaban);
             this.Controls.Add(this.groupBoxMain);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -207,5 +219,6 @@
         private System.Windows.Forms.ListBox listBoxConv;
         private System.Windows.Forms.ToolStripMenuItem calculateMixtureLanToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ListBox listBoxPosJawaban;
     }
 }

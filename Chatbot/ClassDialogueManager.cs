@@ -25,7 +25,7 @@ namespace Chatbot
         List<Term> subTopik = null;
         Term newTopic = null;
         List<Term> ExtraInfo = null;
-        tbInfDetail[] LastPossibleAnswer = null;
+        public tbInfDetail[] LastPossibleAnswer = null;
 
         string message = "";
         bool selesai = false;

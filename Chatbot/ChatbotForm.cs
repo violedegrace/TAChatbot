@@ -180,6 +180,10 @@ namespace Chatbot
             listBoxConv.DataSource = lst;
             int visibleItems = listBoxConv.ClientSize.Height / listBoxConv.ItemHeight;
             listBoxConv.TopIndex = Math.Max(listBoxConv.Items.Count - visibleItems + 1, 0);
+            if (DM.LastPossibleAnswer != null)
+                listBoxPosJawaban.DataSource = DM.LastPossibleAnswer.Select(x => x.info).ToList();
+            else
+                listBoxPosJawaban.DataSource = null;
         }
 
         private void buttonSend_Click(object sender, EventArgs e)

@@ -53,16 +53,16 @@
     </Compile>
     <Compile Include="ClassDialogue.cs" />
     <Compile Include="ClassDialogueManager.cs" />
+    <Compile Include="ClassEngineActuator.cs" />
+    <Compile Include="ClassEngineMixtureLanguageModel.cs" />
     <Compile Include="db.cs">
       <DependentUpon>db.dbml</DependentUpon>
     </Compile>
     <Compile Include="db.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>db.dbml</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="ClassEngineActuator.cs" />
-    <Compile Include="ClassEngineMixtureLanguageModel.cs" />
     <Compile Include="InterfaceIEngine.cs" />
     <Compile Include="Lingkungan.cs" />
     <Compile Include="ClassLocation.cs" />
@@ -81,9 +81,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ClassTerm.cs" />
-    <None Include="db.dbml.layout">
-      <DependentUpon>db.dbml</DependentUpon>
-    </None>
     <EmbeddedResource Include="ChatbotForm.resx">
       <DependentUpon>ChatbotForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -103,9 +100,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <None Include="db.dbml">
+      <SubType>Designer</SubType>
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>db.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
+    </None>
+    <None Include="db.dbml.layout">
+      <DependentUpon>db.dbml</DependentUpon>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
