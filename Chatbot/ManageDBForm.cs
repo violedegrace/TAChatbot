@@ -97,7 +97,7 @@ namespace Chatbot
                         DataBaru.Add(baru);
 //                        File.Copy(item, newLocation);
 //                        db.SubmitChanges();
-                        MessageBox.Show("Data " + fragment[fragment.Length - 1] + " berhasil ditambahkan");
+ //                        MessageBox.Show("Data " + fragment[fragment.Length - 1] + " berhasil ditambahkan");
                     }
                     else
                     {
@@ -155,6 +155,11 @@ namespace Chatbot
         private void buttonDelete_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Fitur Belum tersedia");
+        }
+
+        private void buttonOK_Click(object sender, EventArgs e)
+        {
+
         }
 
     }

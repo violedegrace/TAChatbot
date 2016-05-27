@@ -75,8 +75,14 @@ namespace Chatbot
             {
                 for (int i = 0; i < managedb.LokasibaruData.Count; i++)
                 {
-                    File.Copy(managedb.LokasilamaData[i], managedb.LokasibaruData[i]);
-                    db.tbInformasis.InsertAllOnSubmit(managedb.DataBaru);
+                    foreach (var item in managedb.DataBaru)
+                    {
+                        if (!File.Exists(managedb.LokasibaruData[i]))
+                            File.Copy(managedb.LokasilamaData[i], managedb.LokasibaruData[i]);                            
+                        if (db.tbInformasis.Where(x=>x.Judul.ToString()==item.Judul).FirstOrDefault()==null)
+                            db.tbInformasis.InsertOnSubmit(item);   
+                    }
+//                    db.tbInformasis.InsertAllOnSubmit(managedb.DataBaru.ToList());
                     db.SubmitChanges();
                 }
             }

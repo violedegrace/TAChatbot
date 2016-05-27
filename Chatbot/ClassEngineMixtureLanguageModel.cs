@@ -36,7 +36,8 @@ namespace Chatbot
 
             for (int i = 0; i < InfoList.Count; i++)
             {
-                if (File.Exists(InfoList[i].Lokasi))// && InfoList[i].Indexed==0)
+                bool cek = File.Exists(InfoList[i].Lokasi);
+                if (cek)// && InfoList[i].Indexed==0)
                 {
                     InfoList[i].Indexed = 1;
                     string text = File.ReadAllText(InfoList[i].Lokasi);
@@ -51,7 +52,7 @@ namespace Chatbot
                             createInvertedIndex(Fragment[j], InfoList[i].DomainID, InfoList[i].Id, j);
                         }
                     }
-
+                    bool isExist = File.Exists(Lingkungan.getDataCache() + InfoList[i].tbDomain.Name + "\\" + InfoList[i].Judul);
                     File.Move(InfoList[i].Lokasi, Lingkungan.getDataCache() + InfoList[i].tbDomain.Name + "\\" + InfoList[i].Judul);
                     InfoList[i].Lokasi = Lingkungan.getDataCache() + InfoList[i].tbDomain.Name + "\\" + InfoList[i].Judul;
                 }
@@ -71,7 +72,7 @@ namespace Chatbot
             //cari penghubung, awal dan akhir
             try
             {
-                string[] konjungsi = { "jika", "ketika", "tetapi", "seandainya", "supaya", "walaupun", "seperti", "karena", "sehingga", "bahwa", "dan", "atau", "adalah", "ataupun" };
+                string[] konjungsi = { "adalah", "jika", "ketika", "tetapi", "seandainya", "supaya", "walaupun", "seperti", "karena", "sehingga", "bahwa", "ataupun", "dan", "atau" };
                 string separator = "";
                 foreach (string item in konjungsi)
                 {
@@ -259,7 +260,7 @@ namespace Chatbot
             }
             catch (Exception e)
             {
-                System.Windows.Forms.MessageBox.Show(e.Message);
+//                System.Windows.Forms.MessageBox.Show(e.Message);
                 return false;
             }
         }
