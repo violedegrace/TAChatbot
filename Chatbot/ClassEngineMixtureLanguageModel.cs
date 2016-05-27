@@ -40,7 +40,7 @@ namespace Chatbot
                 {
                     InfoList[i].Indexed = 1;
                     string text = File.ReadAllText(InfoList[i].Lokasi);
-                    string[] Fragment = text.Split('.').ToArray();
+                    string[] Fragment = text.Split(';').ToArray();
                     for (int j = 0; j < Fragment.Length; j++)
                     {
                         if (!String.IsNullOrWhiteSpace(Fragment[j]))
