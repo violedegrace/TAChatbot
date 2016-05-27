@@ -7,6 +7,14 @@ using System.Xml.Serialization;
 
 namespace Chatbot
 {
+    public enum JenisKata
+    {
+        /* Summary
+         * Enum untuk menentukan Sifat/Jenis dari kata yang ada di DataBase
+        */
+        Unknown, Benda, Kerja, Sifat, Keterangan, Ganti, Bilangan,
+        Tugas, Tanya
+    }
     public class Term
     {
         private string _kata;
@@ -36,10 +44,18 @@ namespace Chatbot
             get { return _stopWord; }
             set { _stopWord = value; }
         }
+
+        private JenisKata _jenis;
+        public JenisKata Jenis
+        {
+            get { return _jenis; }
+            set { _jenis = value; }
+        }
                 
         public Term()
         {
             Index = new List<Location>();
+            Jenis = JenisKata.Unknown;
         }
     
 

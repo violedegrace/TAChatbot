@@ -18,6 +18,7 @@ namespace Chatbot
             lokasi.Add(getKnowledgeBase());
             lokasi.Add(getDataBaru());
             lokasi.Add(getDataCache());
+            lokasi.Add(getDataCacheKata());
             dbDataContext db = new dbDataContext();
             foreach (var item in db.tbDomains.ToList())
             {
@@ -87,6 +88,10 @@ namespace Chatbot
         public static string getDataCache()
         {
             return @"C:\Chatbot\KnowledgeBase\Cache\";
+        }
+        public static string getDataCacheKata()
+        {
+            return getDataCache() + "CacheKata/";
         }
 
         // File Location        ===================================

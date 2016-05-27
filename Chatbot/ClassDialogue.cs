@@ -68,6 +68,22 @@ namespace Chatbot
             idx = null;
             return data;
         }
+        public List<Term> StringToTerm(string inpt)
+        {
+            if (inpt.ToLower()=="all")
+            {
+                List<Term> data = new List<Term>();
+                List<Term> idx = Lingkungan.LoadInvertedIndex();
+                foreach (string item in Regex.Split(Str, @"[^A-Za-z0-9]").Where(i => i != string.Empty).ToList())
+                {
+                    Term x = idx.Where(i => i.Word.ToLower() == item.ToLower()).FirstOrDefault();
+                    data.Add(x);
+                }
+                idx = null;
+                return data;
+            }
+            return null;
+        }
 
     }
 }
