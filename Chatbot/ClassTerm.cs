@@ -57,6 +57,10 @@ namespace Chatbot
             Index = new List<Location>();
             Jenis = JenisKata.Unknown;
         }
+        public Term(string str):this()
+        {
+            Word = str;
+        }
     
 
     }

@@ -133,8 +133,33 @@ namespace Chatbot
         }
         public static void SaveInvertedIndex(List<Term> TermCollection)
         {
+            List<Term> kataTanya = new List<Term>();
+            kataTanya.Add(new Term("apa")); //What
+            kataTanya.Add(new Term("apakah"));
+            kataTanya.Add(new Term("siapa")); //Who
+            kataTanya.Add(new Term("siapakah"));
+            kataTanya.Add(new Term("dimana")); //Where
+            kataTanya.Add(new Term("dimanakah"));
+            kataTanya.Add(new Term("kenapa")); //Why
+            kataTanya.Add(new Term("kenapakah"));
+            kataTanya.Add(new Term("kapan")); //When
+            kataTanya.Add(new Term("kapankah"));
+            kataTanya.Add(new Term("bagaimana")); //how
+            kataTanya.Add(new Term("bagaimanakah"));
+            kataTanya.Add(new Term("berapa")); //how (number)
+            kataTanya.Add(new Term("berapakah"));
             try
             {
+                foreach (var item in kataTanya)
+                {
+                    Term y=TermCollection.Where(x=>x.Word.ToLower()==item.Word.ToLower()).FirstOrDefault();
+                    if (y==null)
+                    {
+                        y= new Term(item.Word.ToLower());
+                        TermCollection.Add(y);
+                    }
+                    y.StopWord = true;
+                }
                 XmlSerializer ser = new XmlSerializer(typeof(List<Term>));
                 TextWriter wrt = new StreamWriter(getInvertedIndexLocation());
                 List<Term> Index = TermCollection.OrderBy(x=>x.Word).ToList();

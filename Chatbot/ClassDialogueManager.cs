@@ -370,94 +370,104 @@ namespace Chatbot
             List<Term> masukan = I.StringToTerm("all");
             //Konjungsi "jika", "ketika", "tetapi", "seandainya", "supaya", "walaupun", "seperti", "karena",
             //          "sehingga", "bahwa", "dan", "atau", "adalah", "ataupun"
-            if (data.Penghubung!=null)
+//          System.Windows.Forms.MessageBox.Show(masukan.Count().ToString());
+            try
             {
-                if (masukan[0].Word.Equals("apa") || masukan[0].Word.Equals("apakah")) // apa apakah
+
+                if (data.Penghubung != null)
                 {
-                    if (data.Penghubung.ToLower().Equals("jika") || data.Penghubung.ToLower().Equals("ketika"))
-                        return data.Awal;
-                    else if (data.Penghubung.ToLower().Equals("adalah"))
-                        return data.Akhir;
-                    else
-                        return data.info;
-                }
-                else if (masukan[0].Word.Equals("kapan") || masukan[0].Word.Equals("kapankah")) //kapan
-                {
-                    if (data.Awal.Contains(" jam ") || data.Awal.Contains(" pada ") || data.Awal.Contains(" sewaktu "))
-                        return data.Awal;
-                    else if (data.Penghubung.ToLower().Equals("ketika") || data.Penghubung.ToLower().Equals("jika") ||
-                        data.Akhir.Contains(" jam ") || data.Akhir.Contains(" pada ") || data.Akhir.Contains(" sewaktu "))
-                        return data.Akhir;
-                    else
-                        return data.info;
-                }
-                else if (masukan[0].Word.Equals("siapa") || masukan[0].Word.Equals("siapakah")) //siapa 
-                {
-                    if (data.Penghubung.ToLower().Equals("ketika") || data.Penghubung.ToLower().Equals("adalah"))
-                        return data.Awal;
-                    else if (false)
-                        return data.Akhir;
-                    else
-                        return data.info;
-                }
-                else if (masukan[0].Word.Equals("bagaimana") || masukan[0].Word.Equals("bagaimanakah")) //bagaimana
-                {
-                    if (data.Penghubung.ToLower().Equals("jika"))
-                        return data.Awal;
-                    else if (data.Penghubung.ToLower().Equals("adalah"))
-                        return data.Akhir;
-                    else
-                        return data.info;
-                }
-                else if (masukan[0].Word.Equals("kenapa") || masukan[0].Word.Equals("mengapa")) //kenapa 
-                {
-                    if (data.Penghubung.ToLower().Equals("jika"))
-                        return data.Awal;
-                    else if (false)
-                        return data.Akhir;
-                    else
-                        return data.info;
-                }
-                else if (masukan[0].Word.Equals("dimana") || masukan[0].Word.Equals("dimanakah")) //dimana
-                {
-                    if (data.Awal.Contains(" di ") || data.Awal.Contains(" ke ") || data.Awal.Contains(" di"))
+                    if (masukan[0].Word.Equals("apa") || masukan[0].Word.Equals("apakah")) // apa apakah
                     {
-                        return data.Awal;
+                        if (data.Penghubung.ToLower().Equals("jika") || data.Penghubung.ToLower().Equals("ketika"))
+                            return data.Awal;
+                        else if (data.Penghubung.ToLower().Equals("adalah"))
+                            return data.Akhir;
+                        else
+                            return data.info;
+                    }
+                    else if (masukan[0].Word.Equals("kapan") || masukan[0].Word.Equals("kapankah")) //kapan
+                    {
+                        if (data.Awal.Contains(" jam ") || data.Awal.Contains(" pada ") || data.Awal.Contains(" sewaktu "))
+                            return data.Awal;
+                        else if (data.Penghubung.ToLower().Equals("ketika") || data.Penghubung.ToLower().Equals("jika") ||
+                            data.Akhir.Contains(" jam ") || data.Akhir.Contains(" pada ") || data.Akhir.Contains(" sewaktu "))
+                            return data.Akhir;
+                        else
+                            return data.info;
+                    }
+                    else if (masukan[0].Word.Equals("siapa") || masukan[0].Word.Equals("siapakah")) //siapa 
+                    {
+                        if (data.Penghubung.ToLower().Equals("ketika") || data.Penghubung.ToLower().Equals("adalah"))
+                            return data.Awal;
+                        else if (false)
+                            return data.Akhir;
+                        else
+                            return data.info;
+                    }
+                    else if (masukan[0].Word.Equals("bagaimana") || masukan[0].Word.Equals("bagaimanakah")) //bagaimana
+                    {
+                        if (data.Penghubung.ToLower().Equals("jika"))
+                            return data.Awal;
+                        else if (data.Penghubung.ToLower().Equals("adalah"))
+                            return data.Akhir;
+                        else
+                            return data.info;
+                    }
+                    else if (masukan[0].Word.Equals("kenapa") || masukan[0].Word.Equals("mengapa")) //kenapa 
+                    {
+                        if (data.Penghubung.ToLower().Equals("jika"))
+                            return data.Awal;
+                        else if (false)
+                            return data.Akhir;
+                        else
+                            return data.info;
+                    }
+                    else if (masukan[0].Word.Equals("dimana") || masukan[0].Word.Equals("dimanakah")) //dimana
+                    {
+                        if (data.Awal.Contains(" di ") || data.Awal.Contains(" ke ") || data.Awal.Contains(" di"))
+                        {
+                            return data.Awal;
+                        }
+                        else
+                        {
+                            return data.info;
+                        }
+                    }
+                    else if (masukan[0].Word.Equals("berapa") || masukan[0].Word.Equals("berapakah")) //berapa
+                    {
+                        int y;
+                        if (data.Awal.Split(' ').ToList().Where(x => int.TryParse(x, out y) == true).FirstOrDefault() != null)
+                        {
+                            return data.Awal;
+                        }
+                        else if (data.Akhir.Split(' ').ToList().Where(x => int.TryParse(x, out y) == true).FirstOrDefault() != null)
+                        {
+                            return data.Akhir;
+                        }
+                        return data.info;
                     }
                     else
                     {
-                        return data.info;
+                        System.Windows.Forms.MessageBox.Show(masukan[0].Word);
+                        if (data.Penghubung.ToLower().Equals("jika"))
+                            return data.Awal;
+                        else if (data.Penghubung.ToLower().Equals("adalah"))
+                            return data.Akhir;
+                        else
+                            return data.info;
                     }
-                }
-                else if (masukan[0].Word.Equals("berapa") || masukan[0].Word.Equals("berapakah")) //berapa
-                {
-                    int y;
-                    if (data.Awal.Split(' ').ToList().Where(x => int.TryParse(x, out y) == true).FirstOrDefault() != null)
-                    {
-                        return data.Awal;
-                    }
-                    else if (data.Akhir.Split(' ').ToList().Where(x => int.TryParse(x, out y) == true).FirstOrDefault() != null)
-                    {
-                        return data.Akhir;
-                    }
-                    return data.info;
                 }
                 else
                 {
-                    System.Windows.Forms.MessageBox.Show(masukan[0].Word);
-                    if (data.Penghubung.ToLower().Equals("jika"))
-                        return data.Awal;
-                    else if (data.Penghubung.ToLower().Equals("adalah"))
-                        return data.Akhir;
-                    else
-                        return data.info;
-                }                
+                    return data.info;
+                }
+                return null;
             }
-            else
+            catch (Exception)
             {
                 return data.info;
             }
-            return null;
+
         }
     }
 
