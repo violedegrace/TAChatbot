@@ -64,6 +64,8 @@ namespace Chatbot
                 {
                     if (I.isQuestion() == false) // apakah masukan berupa pertanyaan?
                     {
+                        QAStd = db.tbLogDetails.Where(x => x.LogID == 1 && string.Compare(x.Question.ToString().ToLower(), I.Str.ToLower()) == 0).ToArray();
+                        O = new Dialogue(usr, "Silahkan masukan pertanyaan mengenai FAQ Maranataha atau Teknologi");
                         // jika bukan maka sistem memberikan pengarahan
                         if (CurrentState.Id==3)
                         {
@@ -108,9 +110,8 @@ namespace Chatbot
                                 }
                             }
                         }
-                        if (Conversation.Peek().State == 5)
+                        if (Conversation.Peek().State == 5 || QAStd.Where(x=>x.Id<14).FirstOrDefault()==null)
                         {
-                            QAStd = db.tbLogDetails.Where(x => x.LogID == 1 && string.Compare(x.Question.ToString().ToLower(), I.Str.ToLower()) == 0).ToArray();
                             if (QAStd.Count() > 0)
                             {
                                 CurrentState = ListOfState.Where(x => x.Id == 5).FirstOrDefault();

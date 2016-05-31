@@ -34,7 +34,7 @@ namespace Chatbot
             //bot define
             bool testing = true;
             //Login
-            if (testing) //temporary code
+            if (!testing) //temporary code
             {
                 currentUser = db.tbUsers.Where(x => x.Id == 1).FirstOrDefault();
                 this.Text = bot.Name + " Chatbot";
@@ -62,7 +62,7 @@ namespace Chatbot
                 }
                 #endregion
             }
-            DM.ManageDialogue(bot, "Welcome " + currentUser.Name + " to " + bot.Name + " Chatbot.",null);
+//            DM.ManageDialogue(bot, "Welcome " + currentUser.Name + " to " + bot.Name + " Chatbot.",null);
             refreshListBoxChat();
             this.AcceptButton = this.buttonSend;
         }
@@ -135,6 +135,7 @@ namespace Chatbot
                 this.Login = DialogResult.OK;
                 currentUser = login.user;
                 DM = new DialogueManager(db, bot);
+                DM.ManageDialogue(bot, "Welcome " + currentUser.Name + " to " + bot.Name + " Chatbot.", null);
                 cekAdmin();
                 refreshListBoxChat();
                 textBoxInput.Enabled = true;
@@ -213,6 +214,11 @@ namespace Chatbot
             }
         }        
         #endregion
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Dibuat untuk memenuhi TA oleh:\n1272106 - Benny Gunawan");
+        }
 
 
     }
