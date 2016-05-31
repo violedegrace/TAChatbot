@@ -132,10 +132,7 @@ namespace Chatbot
                 {
                     kata.StopWord = false;
                 }
-                if (kata.Index.Where(x=>x.DomainID==domain && x.InfID==infID && x.InfDetilID==InfDetID && x.Idx==i).FirstOrDefault()==null)
-                {
-                    kata.Index.Add(new Location(domain, infID, InfDetID, i));                    
-                }
+                kata.Index.Add(new Location(domain, infID, InfDetID, i));
             }
             Lingkungan.SaveInvertedIndex(InvertedIndex);
             //hitung pembobotan

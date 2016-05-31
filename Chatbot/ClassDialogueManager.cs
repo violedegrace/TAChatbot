@@ -62,103 +62,128 @@ namespace Chatbot
                 }
                 else
                 {
-                    if (I.StringToTerm().Count() < 1)
+                    if (I.isQuestion() == false) // apakah masukan berupa pertanyaan?
                     {
-                        O = new Dialogue(Bot, "Masukan tidak dikenali");
-                    }
-                    else
-                    {
-
-                        if (I.isQuestion() == false) // apakah masukan berupa pertanyaan?
+                        QAStd = db.tbLogDetails.Where(x => x.LogID == 1 && string.Compare(x.Question.ToString().ToLower(), I.Str.ToLower()) == 0).ToArray();
+                        O = new Dialogue(usr, "Silahkan masukan pertanyaan mengenai FAQ Maranataha atau Teknologi");
+                        // jika bukan maka sistem memberikan pengarahan
+                        if (CurrentState.Id==3)
                         {
-                            QAStd = db.tbLogDetails.Where(x => x.LogID == 1 && string.Compare(x.Question.ToString().ToLower(), I.Str.ToLower()) == 0).ToArray();
-                            O = new Dialogue(usr, "Silahkan masukan pertanyaan mengenai FAQ Maranataha atau Teknologi");
-                            // jika bukan maka sistem memberikan pengarahan
-                            if (CurrentState.Id == 3)
+                            if (Conversation.Peek().Str.ToLower().Contains("apakah ingin merubah topik??"))
                             {
-                                if (Conversation.Peek().Str.ToLower().Contains("apakah ingin merubah topik??"))
+                                string jawaban = "";
+                                if (I.Str.ToLower().Equals("ya"))
                                 {
-                                    string jawaban = "";
-                                    if (I.Str.ToLower().Equals("ya"))
-                                    {
-                                        subTopik = null;
-                                        int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).First());
-                                        CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
-                                        message = "Topik percakapan akan diubah.";
-                                        masuk = true;
-                                    }
-                                    else if (I.Str.ToLower().Equals("tidak"))
-                                    {
-                                        newTopic = null;
-                                        jawaban += "Topik percakapan akan diarahkan ke " + CurrentTopic.Word + ".";
-                                    }
-                                    else
-                                    {
-                                        newTopic = null;
-                                        jawaban += "Masukan tidak dikenali. kembali ke topik sebelumnya";
-                                    }
-                                    if (jawaban != "")
-                                    {
-                                        O = new Dialogue(Bot, jawaban, CurrentState.Id);
-                                    }
+                                    subTopik=null;
+                                    int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).First());
+                                    CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
+                                    message="Topik percakapan akan diubah.";
+                                    masuk = true;
                                 }
-                                if (Conversation.Peek().Str.ToLower().Contains("ditanyakan"))
+                                else if (I.Str.ToLower().Equals("tidak"))
                                 {
-                                    if (I.Str.ToLower().Contains("tidak"))
-                                    {
-                                        int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).First());
-                                        CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
-                                        masuk = true;
-                                    }
-                                    else if (I.Str.ToLower().Contains("ada"))
-                                    {
-                                        string jawaban = "Silahkan masukkan pertanyaan.";
-                                        O = new Dialogue(Bot, jawaban, CurrentState.Id);
-                                    }
+                                    newTopic = null;
+                                    jawaban += "Topik percakapan akan diarahkan ke " + CurrentTopic.Word + ".";
+                                }
+                                else
+                                {
+                                    newTopic = null;
+                                    jawaban += "Masukan tidak dikenali. kembali ke topik sebelumnya";
+                                }
+                                if (jawaban!="")
+                                {
+                                    O = new Dialogue(Bot, jawaban, CurrentState.Id);
                                 }
                             }
-                            if (Conversation.Peek().State == 5 || QAStd.Where(x => x.Id < 14).FirstOrDefault() == null)
+                            if (Conversation.Peek().Str.ToLower().Contains("ditanyakan"))
                             {
-                                if (QAStd.Count() > 0)
+                                if (I.Str.ToLower().Contains("tidak"))
                                 {
-                                    CurrentState = ListOfState.Where(x => x.Id == 5).FirstOrDefault();
-                                    selesai = true;
+                                    int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).First());
+                                    CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
+                                    masuk = true;
+                                }
+                                else if (I.Str.ToLower().Contains("ada"))
+                                {
+                                    string jawaban = "Silahkan masukkan pertanyaan.";
+                                    O = new Dialogue(Bot, jawaban, CurrentState.Id);
                                 }
                             }
                         }
-                        if (I.isQuestion() == true || masuk || initiate || selesai)
+                        if (Conversation.Peek().State == 5 || QAStd.Where(x=>x.Id<14).FirstOrDefault()==null)
                         {
-                            //jika sebuah pertanyaan, sistem akan menjawab pertanyaan.
-                            // State Pembukaan || id=1
-                            if (CurrentState.Id == 1 || CurrentState.Id == 6) // cek input bisa dibalas
-                                QAStd = db.tbLogDetails.Where(x => x.LogID == 1 && string.Compare(x.Question.ToString().ToLower(), I.Str.ToLower()) == 0).ToArray();
-                            if (CurrentState.Id == 1 && QAStd.Count() > 0)
+                            if (QAStd.Count() > 0)
                             {
-                                // membalas sapaan
-                                if (QAStd.Count() > 1)
-                                    O = new Dialogue(Bot, QAStd[rnd.Next(0, QAStd.Count())].Answer, CurrentState.Id);
-                                else
-                                    O = new Dialogue(Bot, QAStd.First().Answer, CurrentState.Id);
+                                CurrentState = ListOfState.Where(x => x.Id == 5).FirstOrDefault();
+                                selesai = true;
                             }
-                            else if (CurrentState.Id == 1)
+                        }
+                    }
+                    if (I.isQuestion() == true || masuk || initiate || selesai)
+                    {
+                        //jika sebuah pertanyaan, sistem akan menjawab pertanyaan.
+                        // State Pembukaan || id=1
+                        if (CurrentState.Id == 1 || CurrentState.Id == 6) // cek input bisa dibalas
+                            QAStd = db.tbLogDetails.Where(x => x.LogID == 1 && string.Compare(x.Question.ToString().ToLower(), I.Str.ToLower()) == 0).ToArray();
+                        if (CurrentState.Id == 1 && QAStd.Count() > 0)
+                        {
+                            // membalas sapaan
+                            if (QAStd.Count() > 1)
+                                O = new Dialogue(Bot, QAStd[rnd.Next(0, QAStd.Count())].Answer, CurrentState.Id);
+                            else
+                                O = new Dialogue(Bot, QAStd.First().Answer, CurrentState.Id);
+                        }
+                        else if (CurrentState.Id == 1)
+                        {
+                            //pindah ke 2
+                            int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).First());
+                            CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
+                            initiate = false;
+                        }
+                        // State Inisialiasi Topik || id=2
+                        if (CurrentState.Id == 2) //cek state
+                        {
+                            //Inisialisasi percakapan 
+                            I.State = CurrentState.Id;
+                            if (CurrentTopic == null)
                             {
-                                //pindah ke 2
+                                //cek domain
+                                int dom = DomainDetection(I);
+                                CurrentDomain = db.tbDomains.Where(x => x.Id == dom).FirstOrDefault();
+                                //cek Topik
+                                CurrentTopic = TopicDetection(I.StringToTerm(), CurrentDomain.Id);
+                                //cari informasi dengan MLM
+                                LastPossibleAnswer = act.PencarianInformasi(I, CurrentDomain.Id, null);
+                                //penentuan jawaban dengan pemilihan jawaban
+                                string jawaban = Pilihjawaban(I, LastPossibleAnswer.First());
+                                //pembuatan jawaban                            
+                                O = new Dialogue(Bot, jawaban, CurrentState.Id);
+                            }
+                            else
+                            {
+                                //pindah ke 3
                                 int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).First());
                                 CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
-                                initiate = false;
                             }
-                            // State Inisialiasi Topik || id=2
-                            if (CurrentState.Id == 2) //cek state
+                        }
+                        // State Pembahasan Topik || id=3
+                        if (CurrentState.Id == 3)
+                        {
+                            //tetap di 3
+                            //cek domain
+                            int dom = DomainDetection(I);
+                            //cek Topik
+                            newTopic = TopicDetection(I.StringToTerm(), CurrentDomain.Id);
+                            if (dom != CurrentDomain.Id)
                             {
-                                //Inisialisasi percakapan 
-                                I.State = CurrentState.Id;
-                                if (CurrentTopic == null)
+                                CurrentState = ListOfState.Where(x => x.Id == 4).FirstOrDefault();
+                                message = "Masukan berbeda Domain. tidak ada hasil.";
+                            }
+                            else
+                            {
+                                //cek hubungan topik lama dan baru;
+                                if (CurrentTopic.Word == newTopic.Word)
                                 {
-                                    //cek domain
-                                    int dom = DomainDetection(I);
-                                    CurrentDomain = db.tbDomains.Where(x => x.Id == dom).FirstOrDefault();
-                                    //cek Topik
-                                    CurrentTopic = TopicDetection(I.StringToTerm(), CurrentDomain.Id);
                                     //cari informasi dengan MLM
                                     LastPossibleAnswer = act.PencarianInformasi(I, CurrentDomain.Id, null);
                                     //penentuan jawaban dengan pemilihan jawaban
@@ -168,31 +193,24 @@ namespace Chatbot
                                 }
                                 else
                                 {
-                                    //pindah ke 3
-                                    int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).First());
-                                    CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
-                                }
-                            }
-                            // State Pembahasan Topik || id=3
-                            if (CurrentState.Id == 3)
-                            {
-                                //tetap di 3
-                                //cek domain
-                                int dom = DomainDetection(I);
-                                //cek Topik
-                                newTopic = TopicDetection(I.StringToTerm(), CurrentDomain.Id);
-                                if (dom != CurrentDomain.Id)
-                                {
-                                    CurrentState = ListOfState.Where(x => x.Id == 4).FirstOrDefault();
-                                    message = "Masukan berbeda Domain. tidak ada hasil.";
-                                }
-                                else
-                                {
-                                    //cek hubungan topik lama dan baru;
-                                    if (CurrentTopic.Word == newTopic.Word)
+                                    //cek keterkaitan
+                                    bool Infdetil = CurrentTopic.Index.Select(x => x.InfDetilID).ToList()
+                                        .Intersect(newTopic.Index.Select(y => y.InfDetilID)).ToList().Count() > 0;
+                                    if (Infdetil) //topic related
                                     {
+                                        //Membuat subtopik
+                                        if (subTopik == null)
+                                            subTopik = new List<Term>();
+                                        subTopik.Add(newTopic);
+
+                                        //membuat informasi tambahan yang diperlukan untuk pencarian
+                                        if (ExtraInfo == null)
+                                            ExtraInfo = new List<Term>();
+                                        ExtraInfo.Add(CurrentTopic);
+                                        ExtraInfo.Add(newTopic);
+
                                         //cari informasi dengan MLM
-                                        LastPossibleAnswer = act.PencarianInformasi(I, CurrentDomain.Id, null);
+                                        LastPossibleAnswer = act.PencarianInformasi(I, CurrentDomain.Id, ExtraInfo);
                                         //penentuan jawaban dengan pemilihan jawaban
                                         string jawaban = Pilihjawaban(I, LastPossibleAnswer.First());
                                         //pembuatan jawaban                            
@@ -200,133 +218,108 @@ namespace Chatbot
                                     }
                                     else
                                     {
-                                        //cek keterkaitan
-                                        bool Infdetil = CurrentTopic.Index.Select(x => x.InfDetilID).ToList()
-                                            .Intersect(newTopic.Index.Select(y => y.InfDetilID)).ToList().Count() > 0;
-                                        if (Infdetil) //topic related
+                                        if (subTopik==null || subTopik.Count < 1)
                                         {
-                                            //Membuat subtopik
-                                            if (subTopik == null)
-                                                subTopik = new List<Term>();
-                                            subTopik.Add(newTopic);
-
-                                            //membuat informasi tambahan yang diperlukan untuk pencarian
-                                            if (ExtraInfo == null)
-                                                ExtraInfo = new List<Term>();
-                                            ExtraInfo.Add(CurrentTopic);
-                                            ExtraInfo.Add(newTopic);
-
-                                            //cari informasi dengan MLM
-                                            LastPossibleAnswer = act.PencarianInformasi(I, CurrentDomain.Id, ExtraInfo);
-                                            //penentuan jawaban dengan pemilihan jawaban
-                                            string jawaban = Pilihjawaban(I, LastPossibleAnswer.First());
-                                            //pembuatan jawaban                            
+                                            //new topic
+                                            string jawaban = "Topik " + newTopic.Word + " tidak ada hubungan dengan topik " + CurrentTopic.Word + ". ";
+                                            jawaban += "Apakah ingin merubah topik??";// (jawab dengan 'ya','tidak' atau 'mungkin')";
                                             O = new Dialogue(Bot, jawaban, CurrentState.Id);
                                         }
                                         else
                                         {
-                                            if (subTopik == null || subTopik.Count < 1)
-                                            {
-                                                //new topic
-                                                string jawaban = "Topik " + newTopic.Word + " tidak ada hubungan dengan topik " + CurrentTopic.Word + ". ";
-                                                jawaban += "Apakah ingin merubah topik??";// (jawab dengan 'ya','tidak' atau 'mungkin')";
-                                                O = new Dialogue(Bot, jawaban, CurrentState.Id);
-                                            }
-                                            else
-                                            {
-                                                //pindah ke 4
-                                                int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).First());
-                                                CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
-                                            }
+                                            //pindah ke 4
+                                            int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).First());
+                                            CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
                                         }
                                     }
                                 }
-                                //                        System.Windows.Forms.MessageBox.Show(CurrentTopic.Word);
                             }
-                            // State Pembahasan SubTopik || id=4
-                            if (CurrentState.Id == 4)
+                            //                        System.Windows.Forms.MessageBox.Show(CurrentTopic.Word);
+                        }
+                        // State Pembahasan SubTopik || id=4
+                        if (CurrentState.Id == 4)
+                        {
+                            if (CurrentTopic.Word!=newTopic.Word)
                             {
-                                if (CurrentTopic.Word != newTopic.Word)
+                                if (subTopik!=null && subTopik.Count>0)
                                 {
-                                    if (subTopik != null && subTopik.Count > 0)
-                                    {
-                                        //tetap di 4, dan kembali ke 3 || kembali ke 3 karena state 4 hanya mengambil topik untuk dibahas
-                                        CurrentTopic = subTopik.First();
-                                        subTopik.Remove(CurrentTopic);
-                                        int prevState = Convert.ToInt32(StateMovement.Where(x => x.NextStateID == CurrentState.Id).Select(x => x.StateID).First());
-                                        CurrentState = ListOfState.Where(x => x.Id == prevState).FirstOrDefault();
-                                        //penentuan jawaban dengan pemilihan jawaban
-                                        string jawaban = "Masih ada topik yang dapat dibahas yaitu mengenai " + CurrentTopic.Word;
-                                        jawaban += ". Ada yang ingin ditanyakan mengenai " + CurrentTopic.Word + "?";
-                                        //pembuatan jawaban                            
-                                        O = new Dialogue(Bot, jawaban, CurrentState.Id);
-                                    }
-                                    else
-                                    {
-                                        //pindah ke 5
-                                        int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).First());
-                                        CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
-                                    }
-                                }
-                            }
-                            // State Pengalihan topik || id=5
-                            if (CurrentState.Id == 5)
-                            {
-                                if (selesai == true) // lanjut ke 6
-                                {
-                                    //penutup --> pindah ke 6
-                                    int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).Last());
-                                    CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
-                                }
-                                else if (masuk == true || (subTopik != null && subTopik.Count() < 1))
-                                {
-                                    //pindah ke 2
-                                    //pengarahan percakapan kembali ke state 2 untuk emulai topik baru
-                                    masuk = false;
-                                    string jawaban = message + " Masukkan yang ingin dibicarakan.";
-                                    message = "";
-                                    CurrentTopic = null;
+                                    //tetap di 4, dan kembali ke 3 || kembali ke 3 karena state 4 hanya mengambil topik untuk dibahas
+                                    CurrentTopic = subTopik.First();
+                                    subTopik.Remove(CurrentTopic);
+                                    int prevState = Convert.ToInt32(StateMovement.Where(x => x.NextStateID == CurrentState.Id).Select(x => x.StateID).First());
+                                    CurrentState = ListOfState.Where(x => x.Id == prevState).FirstOrDefault();
+                                    //penentuan jawaban dengan pemilihan jawaban
+                                    string jawaban = "Masih ada topik yang dapat dibahas yaitu mengenai "+CurrentTopic.Word;
+                                    jawaban += ". Ada yang ingin ditanyakan mengenai " + CurrentTopic.Word + "?";
+                                    //pembuatan jawaban                            
                                     O = new Dialogue(Bot, jawaban, CurrentState.Id);
-                                    int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).First());
-                                    CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
-                                }
-                                else if (subTopik == null) // kembali ke 2
-                                {
-                                    string jawaban = "Masukan tidak ada di domain ini dan tidak ada subtopik untuk dibahas. Masukkan hal ingin dibicarakan";
-                                    O = new Dialogue(Bot, jawaban, CurrentState.Id);
-                                    int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).First());
-                                    CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
                                 }
                                 else
                                 {
-                                    //fail-safe
-                                    string jawaban = "Proses pengalihan";
-                                    O = new Dialogue(Bot, jawaban, CurrentState.Id);
+                                    //pindah ke 5
+                                    int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).First());
+                                    CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
                                 }
-
                             }
-                            if (CurrentState.Id == 6)
+                        }
+                        // State Pengalihan topik || id=5
+                        if (CurrentState.Id == 5)
+                        {
+                            if (selesai == true) // lanjut ke 6
                             {
-                                // membalas sapaan
-                                if (QAStd.Count() > 1)
-                                    O = new Dialogue(Bot, QAStd[rnd.Next(0, QAStd.Count())].Answer, CurrentState.Id);
-                                else
-                                    O = new Dialogue(Bot, QAStd.First().Answer, CurrentState.Id);
-
-                                // State penutup || id=6
-                                CurrentState = new tbState();
-                                //tutup percakapan.
-                                CurrentState.Id = 7;
-                                //tutup
+                                //penutup --> pindah ke 6
+                                int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).Last());
+                                CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
+                            }
+                            else if (masuk == true || (subTopik != null && subTopik.Count() < 1))
+                            {
+                                //pindah ke 2
+                                //pengarahan percakapan kembali ke state 2 untuk emulai topik baru
+                                masuk = false;
+                                string jawaban = message+" Masukkan yang ingin dibicarakan.";
+                                message = "";
+                                CurrentTopic = null;
+                                O=new Dialogue(Bot,jawaban,CurrentState.Id);
+                                int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).First());
+                                CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
+                            }
+                            else if (subTopik == null) // kembali ke 2
+                            {
+                                string jawaban = "Masukan tidak ada di domain ini dan tidak ada subtopik untuk dibahas. Masukkan hal ingin dibicarakan";
+                                O = new Dialogue(Bot, jawaban, CurrentState.Id);
+                                int nextState = Convert.ToInt32(StateMovement.Where(x => x.StateID == CurrentState.Id).Select(x => x.NextStateID).First());
+                                CurrentState = ListOfState.Where(x => x.Id == nextState).FirstOrDefault();
+                            }
+                            else 
+                            {
+                                //fail-safe
+                                string jawaban = "Proses pengalihan";
+                                O = new Dialogue(Bot, jawaban, CurrentState.Id);
                             }
 
                         }
+                        if (CurrentState.Id == 6)
+                        {
+                            // membalas sapaan
+                            if (QAStd.Count() > 1)
+                                O = new Dialogue(Bot, QAStd[rnd.Next(0, QAStd.Count())].Answer, CurrentState.Id);
+                            else
+                                O = new Dialogue(Bot, QAStd.First().Answer, CurrentState.Id);
+
+                            // State penutup || id=6
+                            CurrentState = new tbState();
+                            //tutup percakapan.
+                            CurrentState.Id = 7;
+                            //tutup
+                        }
+
                     }
                 }
             }
             catch (Exception e)
             {
                 O = new Dialogue(Bot,"Maaf terjadi kesalah sistem. report id : "+CurrentState.Id);
+                System.Windows.Forms.MessageBox.Show(e.StackTrace);
             }
             finally
             {
